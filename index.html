@@ -446,23 +446,25 @@
                     </div>`;
             }
 
+// 이 아래부터 통째로 덮어쓰기 하시면 됩니다.
             document.getElementById('studio-auth-box').classList.toggle('hidden', state.creator.authenticated);
             document.getElementById('studio-main-content').classList.toggle('hidden', !state.creator.authenticated);
-        }
-// 💡 스크립트 영역 맨 아래( </script> 바로 위)에 이 함수를 복사해서 붙여넣으세요.
-function checkAndSwitch() {
-    // 1. 성별과 장소 중 활성화된 버튼이 있는지 검사 (브라우저 스토리지 값 기준)
-    const hasGender = localStorage.getItem('j_gender_v8');
-    const hasPlace = localStorage.getItem('j_place_v8');
+        } // 💡 여기가 render() 함수가 완전히 끝나는 닫는 중괄호입니다.
 
-    // 2. 두 가지가 모두 저장되어 선택된 상태일 때만 운동영상 탭으로 이동
-    if (hasGender && hasPlace) {
-        setTimeout(() => {
-            switchTab('library');
-            showToast("🎯 맞춤형 추천 영상 화면으로 이동했습니다.");
-        }, 300); // 사용자가 클릭을 인지할 수 있도록 0.3초 미세한 딜레이 부여
-    }
-}
+        // 🎯 [성별 + 장소] 둘 다 고르면 자동으로 화면 전환해주는 핵심 함수
+        function checkAndSwitch() {
+            // 브라우저에 성별과 장소가 모두 저장되었는지 확인
+            const hasGender = localStorage.getItem('j_gender_v8');
+            const hasPlace = localStorage.getItem('j_place_v8');
+
+            // 둘 다 값이 채워져 있을 때만 작동
+            if (hasGender && hasPlace) {
+                setTimeout(() => {
+                    switchTab('library');
+                    showToast("🎯 맞춤형 추천 영상 화면으로 이동했습니다.");
+                }, 300); // 0.3초 미세 딜레이로 자연스러운 전환 유도
+            }
+        }
     </script>
 </body>
 </html>
