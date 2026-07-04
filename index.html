@@ -291,8 +291,26 @@
             render();
         }
 
-        function setProfileGender(val) { state.gender = val; saveState(); render(); }
-        function setProfilePlace(val) { state.place = val; saveState(); render(); }
+        // ➡️ [새로운 코드] (이것으로 통째로 교체하세요)
+function setProfileGender(val) { 
+    state.gender = val; 
+    saveState(); 
+    
+    // 버튼들의 불빛(색상)만 즉시 바꿔주기 위해 클래스를 직접 제어합니다.
+    ['남성', '여성'].forEach(g => {
+        document.getElementById('gender-'+g).className = `py-3 rounded-xl font-bold border transition-colors ${val === g ? 'bg-brand-teal text-white border-teal-500' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`;
+    });
+}
+
+function setProfilePlace(val) { 
+    state.place = val; 
+    saveState(); 
+    
+    // 버튼들의 불빛(색상)만 즉시 바꿔주기 위해 클래스를 직접 제어합니다.
+    ['헬스장', '홈트', '야외'].forEach(p => {
+        document.getElementById('place-'+p).className = `py-3 rounded-xl font-bold border transition-colors ${val === p ? 'bg-brand-teal text-white border-teal-500' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`;
+    });
+}
         
         function applyLibraryFilters() { 
             state.libFilter.area = document.getElementById('filter-area').value; 
