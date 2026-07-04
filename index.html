@@ -48,34 +48,47 @@
         <main class="flex-grow p-4 space-y-6 overflow-y-auto">
 
             <!-- 👤 1. 프로필 패널 (선택 시 자동 화면 전환 적용) -->
-            <section id="pane-profile" class="fade-in space-y-5">
-                <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm">
-                    <div class="flex items-center gap-2 mb-4 border-b border-zinc-800 pb-3">
-                        <span class="text-xl">👤</span>
-                        <h2 class="text-base font-bold text-white">맞춤 필터 설정</h2>
-                    </div>
-                    <p class="text-xs text-zinc-400 leading-relaxed mb-5">
-                        성별과 운동 장소를 선택하시면 맞춤형 쇼츠 영상 화면으로 즉시 연결됩니다.
-                    </p>
-                    <div class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-semibold text-zinc-300 mb-2">1. 성별 선택</label>
-                            <div class="grid grid-cols-2 gap-2 text-sm">
-                                <button id="gender-남성" onclick="setProfileGender('남성'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">남성</button>
-                                <button id="gender-여성" onclick="setProfileGender('여성'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">여성</button>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-zinc-300 mb-2">2. 트레이닝 장소</label>
-                            <div class="grid grid-cols-3 gap-2 text-sm">
-                                <button id="place-헬스장" onclick="setProfilePlace('헬스장'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">헬스장</button>
-                                <button id="place-홈트" onclick="setProfilePlace('홈트'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">홈트</button>
-                                <button id="place-야외" onclick="setProfilePlace('야외'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">야외</button>
-                            </div>
-                        </div>
-                    </div>
+<section id="pane-profile" class="fade-in space-y-5">
+    <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center gap-2 mb-4 border-b border-zinc-800 pb-3">
+            <span class="text-xl">👤</span>
+            <h2 class="text-base font-bold text-white">맞춤 필터 설정</h2>
+        </div>
+        
+        <p class="text-xs text-zinc-400 leading-relaxed mb-5">
+            성별과 운동 장소를 모두 선택하시면 맞춤형 쇼츠 영상 화면으로 즉시 연결됩니다.
+        </p>
+
+        <div class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold text-zinc-300 mb-2">1. 성별 선택</label>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <!-- 💡 즉시 탭이 바뀌던 switchTab을 지우고 checkAndSwitch()로 변경 -->
+                    <button id="gender-남성" onclick="setProfileGender('남성'); checkAndSwitch();" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">남성</button>
+                    <button id="gender-여성" onclick="setProfileGender('여성'); checkAndSwitch();" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">여성</button>
                 </div>
-            </section>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-zinc-300 mb-2">2. 트레이닝 장소</label>
+                <div class="grid grid-cols-3 gap-2 text-sm">
+                    <!-- 💡 즉시 탭이 바뀌던 switchTab을 지우고 checkAndSwitch()로 변경 -->
+                    <button id="place-헬스장" onclick="setProfilePlace('헬스장'); checkAndSwitch();" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">헬스장</button>
+                    <button id="place-홈트" onclick="setProfilePlace('홈트'); checkAndSwitch();" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">홈트</button>
+                    <button id="place-야외" onclick="setProfilePlace('야외'); checkAndSwitch();" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">야외</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 💡 하단 넓은 빈 공간에 추가된 지니플렉스 공식 안내 문구 상자 -->
+    <div class="bg-zinc-850/50 border border-zinc-800/80 rounded-2xl p-5 space-y-3 text-xs text-zinc-400 leading-relaxed shadow-inner">
+        <p class="font-semibold text-zinc-300 flex items-center gap-1">📢 지니플렉스 앱 이용 안내</p>
+        <p>이 앱은 <span class="text-brand-teal font-bold">100% 무료</span>이며, 주위 분들에게 자유롭게 공유가 가능합니다.</p>
+        <p>앱이 마음에 드셨다면 <a href="https://www.youtube.com/@JinnyFlex" target="_blank" class="text-[#ff0000] font-extrabold underline hover:text-red-400 transition-colors">❤️ 지니플렉스 유튜브 채널</a>에 접속하셔서 <strong>구독과 좋아요</strong> 부탁드립니다!</p>
+        <p class="text-[11px] text-zinc-500 border-t border-zinc-800/60 pt-2">※ 본 앱은 상황에 따라 지속적으로 업데이트될 수 있습니다. 이용 중 제안하고 싶으신 의견이나 불편한 사항은 언제든 <a href="mailto:jinution@gmail.com" class="text-brand-teal underline">jinution@gmail.com</a>으로 연락 주시면 감사하겠습니다.</p>
+    </div>
+</section>
 
             <!-- 🎬 2. 운동영상 패널 (부위/기구 문구 수정 완료) -->
             <section id="pane-library" class="fade-in space-y-4 hidden">
@@ -436,6 +449,20 @@
             document.getElementById('studio-auth-box').classList.toggle('hidden', state.creator.authenticated);
             document.getElementById('studio-main-content').classList.toggle('hidden', !state.creator.authenticated);
         }
+// 💡 스크립트 영역 맨 아래( </script> 바로 위)에 이 함수를 복사해서 붙여넣으세요.
+function checkAndSwitch() {
+    // 1. 성별과 장소 중 활성화된 버튼이 있는지 검사 (브라우저 스토리지 값 기준)
+    const hasGender = localStorage.getItem('j_gender_v8');
+    const hasPlace = localStorage.getItem('j_place_v8');
+
+    // 2. 두 가지가 모두 저장되어 선택된 상태일 때만 운동영상 탭으로 이동
+    if (hasGender && hasPlace) {
+        setTimeout(() => {
+            switchTab('library');
+            showToast("🎯 맞춤형 추천 영상 화면으로 이동했습니다.");
+        }, 300); // 사용자가 클릭을 인지할 수 있도록 0.3초 미세한 딜레이 부여
+    }
+}
     </script>
 </body>
 </html>
