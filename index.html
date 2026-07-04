@@ -53,53 +53,48 @@
         <main class="flex-grow p-4 space-y-6 overflow-y-auto">
 
             <!-- 👤 1. 프로필 패널 -->
-            <section id="pane-profile" class="fade-in space-y-5">
-                <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm">
-                    <div class="flex items-center gap-2 mb-4 border-b border-zinc-800 pb-3">
-                        <span class="text-xl">👤</span>
-                        <h2 class="text-base font-bold text-white">맞춤 필터 설정</h2>
-                    </div>
-                    
-                    <p class="text-xs text-zinc-400 leading-relaxed mb-5">
-                        본인의 성별과 운동 장소를 선택하시면, 지니플렉스 채널의 영상 중 본인에게 100% 맞는 맞춤형 쇼츠 영상만 자동으로 걸러서 보여드립니다.
-                    </p>
+<section id="pane-profile" class="fade-in space-y-5">
+    <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm">
+        <div class="flex items-center gap-2 mb-4 border-b border-zinc-800 pb-3">
+            <span class="text-xl">👤</span>
+            <h2 class="text-base font-bold text-white">맞춤 필터 설정</h2>
+        </div>
+        
+        <p class="text-xs text-zinc-400 leading-relaxed mb-5">
+            본인의 성별과 운동 장소를 선택하시면, 지니플렉스 채널의 영상 중 본인에게 100% 맞는 맞춤형 쇼츠 영상만 자동으로 걸러서 보여드립니다.
+        </p>
 
-                    <div class="space-y-5">
-                        <div>
-                            <label class="block text-sm font-semibold text-zinc-300 mb-2">1. 성별 선택</label>
-                            <div class="grid grid-cols-2 gap-2 text-sm">
-                                <button id="gender-남성" onclick="setProfileGender('남성')" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">남성</button>
-                                <button id="gender-여성" onclick="setProfileGender('여성')" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">여성</button>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-semibold text-zinc-300 mb-2">2. 트레이닝 장소</label>
-                            <div class="grid grid-cols-3 gap-2 text-sm">
-                                <button id="place-헬스장" onclick="setProfilePlace('헬스장')" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">헬스장</button>
-                                <button id="place-홈트" onclick="setProfilePlace('홈트')" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">홈트</button>
-                                <button id="place-야외" onclick="setProfilePlace('야외')" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">야외</button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold text-zinc-300 mb-2">1. 성별 선택</label>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <!-- 💡 클릭 시 바로 영상 탭으로 이동하도록 switchTab('library') 추가 -->
+                    <button id="gender-남성" onclick="setProfileGender('남성'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">남성</button>
+                    <button id="gender-여성" onclick="setProfileGender('여성'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">여성</button>
                 </div>
+            </div>
 
-                <button onclick="switchTab('library')" class="w-full py-3.5 bg-brand-teal text-white font-extrabold rounded-xl text-sm shadow-lg flex justify-center items-center gap-1.5 active:scale-95 transition-transform">
-                    <span>내 맞춤 쇼츠 영상 보러가기</span> ➡️
-                </button>
-            </section>
+            <div>
+                <label class="block text-sm font-semibold text-zinc-300 mb-2">2. 트레이닝 장소</label>
+                <div class="grid grid-cols-3 gap-2 text-sm">
+                    <!-- 💡 클릭 시 바로 영상 탭으로 이동하도록 switchTab('library') 추가 -->
+                    <button id="place-헬스장" onclick="setProfilePlace('헬스장'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">헬스장</button>
+                    <button id="place-홈트" onclick="setProfilePlace('홈트'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">홈트</button>
+                    <button id="place-야외" onclick="setProfilePlace('야외'); switchTab('library');" class="py-3 rounded-xl font-bold border transition-colors bg-zinc-800 text-zinc-400 border-zinc-700">야외</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 💡 [내 맞춤 쇼츠 영상 보러가기] 버튼이 있던 자리를 비워 삭제했습니다. -->
+</section>
 
             <!-- 🎬 2. 운동영상 패널 -->
             <section id="pane-library" class="fade-in space-y-4 hidden">
                 <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-4 shadow-sm sticky top-16 z-30">
-                    <div class="flex items-center justify-between mb-3">
-                        <h2 class="text-sm font-bold text-white flex items-center gap-1.5"><span class="text-lg">🎬</span> 맞춤형 쇼츠 검색</h2>
-                    </div>
-
                     <div class="grid grid-cols-2 gap-2 text-sm">
                         <div>
                             <select id="filter-area" onchange="applyLibraryFilters()" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-zinc-200 font-medium outline-none focus:border-brand-teal">
-                                <option value="전체">부위 전체보기</option>
+                                <option value="">운동 부위 선택</option>
                                 <option value="가슴">가슴</option>
                                 <option value="등">등</option>
                                 <option value="하체">하체</option>
@@ -112,7 +107,7 @@
                         </div>
                         <div>
                             <select id="filter-equipment" onchange="applyLibraryFilters()" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-zinc-200 font-medium outline-none focus:border-brand-teal">
-                                <option value="전체">기구 전체보기</option>
+                                <option value="">운동 기구 선택</option>
                                 <option value="바벨">바벨</option>
                                 <option value="덤벨">덤벨</option>
                                 <option value="케이블">케이블</option>
@@ -139,74 +134,92 @@
 
             <!-- 💊 3. 보충제 패널 -->
             <section id="pane-protein" class="fade-in space-y-4 hidden">
-                <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm space-y-5">
-                    <div class="flex items-center gap-2 border-b border-zinc-800 pb-3">
-                        <span class="text-xl">💊</span>
-                        <h2 class="text-base font-bold text-white">필수 보충제 & 영양 백과</h2>
+    <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm space-y-5">
+        <div class="flex items-center gap-2 border-b border-zinc-800 pb-3">
+            <span class="text-xl">💊</span>
+            <h2 class="text-base font-bold text-white">지니플렉스 보충제 가이드 & 시너지 백과</h2>
+        </div>
+
+        <div class="space-y-4 text-sm leading-relaxed text-zinc-300">
+            <!-- 단백질 -->
+            <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
+                <h4 class="font-bold text-brand-teal text-sm flex items-center gap-1.5">🥛 단백질 (WPC / WPI)</h4>
+                <div class="mt-2 text-xs space-y-1 text-zinc-400">
+                    <p>• <strong>섭취 기전:</strong> 운동 직후 찢어진 근섬유 회복 및 합성을 유도하는 필수 영양소입니다.</p>
+                    <p>• <strong>섭취 시간:</strong> 기상 직후 공복 혹은 기상 후 30분 이내 공급 시 효율이 극대화됩니다.</p>
+                    <p>• <strong>주의점:</strong> 과다 섭취 시 간과 신장에 부담을 주며 통풍을 유발할 수 있으므로 하루 권장량(체중 당 1.5g~2g)을 준수하세요.</p>
+                </div>
+            </div>
+
+            <!-- 크레아틴 -->
+            <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
+                <h4 class="font-bold text-brand-teal text-sm flex items-center gap-1.5">⚡ 크레아틴 모노하이드레이트</h4>
+                <div class="mt-2 text-xs space-y-1 text-zinc-400">
+                    <p>• <strong>섭취 기전:</strong> 근육 내 ATP 에너지를 재합성하여 고강도 훈련 시 스트렝스를 향상시킵니다.</p>
+                    <p>• <strong>섭취 시간:</strong> 기상 직후 혹은 운동 직후 매일 3~5g씩 일정한 시간에 꾸준히 섭취해야 체내 저장량이 유지됩니다.</p>
+                    <p>• <strong>주의점:</strong> 신장 기능 저하 우려가 있으므로 하루 최소 2.5L 이상의 수분 섭취가 필수적입니다.</p>
+                </div>
+            </div>
+
+            <!-- 시너지 추천 -->
+            <div class="bg-zinc-900 p-4 rounded-xl border border-teal-900/50 bg-teal-950/10">
+                <h4 class="font-bold text-emerald-400 text-sm flex items-center gap-1.5">🔥 추천 보충제 시너지 조합</h4>
+                <div class="mt-2 text-xs space-y-2 text-zinc-400">
+                    <div>
+                        <span class="text-zinc-200 font-bold">[부스터 조합] 아르기닌 + 시트룰린 + 카페인</span>
+                        <p class="mt-0.5">• 운동 30분 전 공복 섭취 시 혈관 확장 및 강한 각성 효과로 펌핑감을 극대화합니다.</p>
                     </div>
-                    <div class="space-y-4 text-sm leading-relaxed text-zinc-300">
-                        <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
-                            <h4 class="font-bold text-brand-teal text-sm flex items-center gap-1.5"><span class="text-base">🥛</span> 단백질 (WPC / WPI)</h4>
-                            <p class="mt-2 text-xs">운동 직후 근육 회복을 위한 가장 기본적이고 필수적인 보충제입니다.</p>
-                            <ul class="mt-2 text-xs text-zinc-400 list-disc pl-4 space-y-1">
-                                <li><strong>WPC:</strong> 가성비가 좋고 대중적입니다. 소화가 잘 되시는 분 추천.</li>
-                                <li><strong>WPI:</strong> 유당을 제거하여 우유를 먹으면 배가 아픈 분들(유당불내증)에게 필수입니다.</li>
-                            </ul>
-                        </div>
-                        <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800">
-                            <h4 class="font-bold text-brand-teal text-sm flex items-center gap-1.5"><span class="text-base">⚡</span> 크레아틴</h4>
-                            <p class="mt-2 text-xs">고강도 운동 시 순간적인 파워를 올려주고 근육에 수분을 머금게 하여 펌핑감을 줍니다.</p>
-                            <ul class="mt-2 text-xs text-zinc-400 list-disc pl-4 space-y-1">
-                                <li><strong>섭취법:</strong> 매일 3~5g씩 꾸준히 드시는 것이 중요합니다.</li>
-                                <li><strong>주의점:</strong> 하루에 물을 최소 2~3리터 이상 충분히 마셔주어야 신장에 무리가 가지 않습니다.</li>
-                            </ul>
-                        </div>
+                    <div>
+                        <span class="text-zinc-200 font-bold">[근성장 조합] 크레아틴 + 포도당(단탄지 탄수화물)</span>
+                        <p class="mt-0.5">• 인슐린 스파이크를 유도하여 크레아틴이 근육 세포 내로 빠르게 흡수되도록 돕습니다.</p>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
+    </div>
+</section>
 
             <!-- 🍱 4. 식단 패널 -->
             <section id="pane-diet" class="fade-in space-y-4 hidden">
-                <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm space-y-4">
-                    <div class="flex items-center gap-2 border-b border-zinc-800 pb-3">
-                        <span class="text-xl">🍱</span>
-                        <h2 class="text-base font-bold text-white">목적별 알기 쉬운 식단 가이드</h2>
-                    </div>
-                    <p class="text-xs text-zinc-400">복잡한 계산 없이, 지니플렉스가 추천하는 목적별 정석 식단 구성을 바로 확인하세요.</p>
-                    <div class="bg-zinc-900 p-1.5 rounded-xl border border-zinc-800 grid grid-cols-2 gap-1 text-center mt-3">
-                        <button id="diet-target-diet" onclick="setDietTarget('diet')" class="py-2.5 rounded-lg font-bold text-xs bg-brand-teal text-white border border-teal-500 transition-colors">🔥 다이어트/컷팅</button>
-                        <button id="diet-target-bulk" onclick="setDietTarget('bulk')" class="py-2.5 rounded-lg font-bold text-xs bg-zinc-800 text-zinc-400 border border-zinc-700 transition-colors">💪 증량/벌크업</button>
-                    </div>
-                    <div class="pt-2">
-                        <h3 id="diet-list-title" class="text-sm font-extrabold text-white mb-3">🔥 다이어트 정석 식단</h3>
-                        <div id="diet-menu-container" class="space-y-3"></div>
-                    </div>
-                </div>
-            </section>
+    <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm space-y-4">
+        <div class="flex items-center gap-2 border-b border-zinc-800 pb-3">
+            <span class="text-xl"> Bento Box 🍱 </span>
+            <h2 class="text-base font-bold text-white">목적별 타겟 식단 가이드</h2>
+        </div>
+        <div class="bg-zinc-900 p-1.5 rounded-xl border border-zinc-800 grid grid-cols-2 gap-1 text-center">
+            <button id="diet-target-diet" onclick="setDietTarget('diet')" class="py-2.5 rounded-lg font-bold text-xs bg-brand-teal text-white border border-teal-500 transition-colors">🔥 다이어트/컷팅 정석</button>
+            <button id="diet-target-bulk" onclick="setDietTarget('bulk')" class="py-2.5 rounded-lg font-bold text-xs bg-zinc-800 text-zinc-400 border border-zinc-700 transition-colors">💪 근육 증량/벌크업</button>
+        </div>
+        <div class="pt-2">
+            <h3 id="diet-list-title" class="text-sm font-extrabold text-white mb-3"></h3>
+            <div id="diet-menu-container" class="space-y-3"></div>
+        </div>
+    </div>
+</section>
 
-            <!-- ⚙️ 5. 스튜디오 패널 -->
-            <section id="pane-studio" class="fade-in space-y-4 hidden">
-                <div id="studio-auth-box" class="bg-zinc-850 border border-zinc-800 rounded-2xl p-6 shadow-sm text-center space-y-4">
-                    <span class="text-4xl block">🔐</span>
-                    <h2 class="text-base font-bold text-white">지니플렉스 스튜디오</h2>
-                    <p class="text-xs text-zinc-400">데이터베이스 연동 관리를 위한 관리자 전용 인증 공간입니다.</p>
-                    <div class="space-y-2 pt-2">
-                        <input id="studio-pass" type="password" placeholder="비밀번호 입력" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-center text-sm text-white focus:outline-none focus:border-brand-teal transition-colors">
-                        <button onclick="loginStudio()" class="w-full bg-brand-teal text-white py-3 rounded-xl font-bold text-sm shadow-md active:scale-95 transition-transform">인증하기</button>
-                    </div>
-                </div>
-                <div id="studio-main-content" class="hidden space-y-4">
-                    <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-6 shadow-sm text-center space-y-4">
-                        <h3 class="text-base font-bold text-white">📊 구글 시트 데이터베이스 관리</h3>
-                        <p class="text-xs text-zinc-400 leading-relaxed">
-                            영상을 새로 올리셨나요? 엑셀 파일(구글 시트)에 유튜브 제목과 링크를 한 줄만 추가하시면 스마트폰 앱에 10개씩 페이징되어 자동으로 반영됩니다.
-                        </p>
-                        <button onclick="window.open('https://docs.google.com/spreadsheets/', '_blank')" class="w-full py-3.5 bg-zinc-200 text-zinc-900 font-extrabold rounded-xl text-sm shadow-sm active:scale-95 transition-transform">
-                            내 구글 스프레드시트 열기 ➡️
-                        </button>
-                    </div>
-                </div>
-            </section>
+<script>
+// 자바스크립트 render() 함수 내의 식단 렌더링 코드 교체
+if (state.dietTarget === 'diet') {
+    dietTitle.innerText = "🔥 다이어트 정석 타임라인 식단";
+    dietMenu.innerHTML = `
+        <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 space-y-3">
+            <div class="border-b border-zinc-800 pb-2">
+                <span class="text-[10px] font-bold text-brand-teal bg-zinc-800 px-2 py-1 rounded-md mb-1 inline-block">수면 4시간 전 금식 필수</span>
+                <p class="text-[11px] text-zinc-400">지방 합성 효소 분비를 막기 위해 <strong>저녁 식사는 늦어도 밤 7시 30분(취침 전 최소 4시간 여유)까지</strong> 완료해야 합니다.</p>
+            </div>
+            <div class="space-y-2 text-xs text-zinc-400">
+                <p class="flex items-start gap-2"><span class="text-zinc-200 w-12 shrink-0">⏰ 아침:</span> <span>오트밀 40g + 닭가슴살 100g + 사과 반쪽 (클린 카보 수월한 에너지 공급)</span></p>
+                <p class="flex items-start gap-2"><span class="text-zinc-200 w-12 shrink-0">⏰ 점심:</span> <span>현미밥 130g + 소고기 우둔살 120g + 녹색 야채 믹스</span></p>
+                <p class="flex items-start gap-2"><span class="text-zinc-200 w-12 shrink-0">⏰ 운후:</span> <span>단백질 쉐이크 1잔 + 바나나 1개 (기회 창출 기전 가속화)</span></p>
+                <p class="flex items-start gap-2"><span class="text-zinc-200 w-12 shrink-0">⏰ 저녁:</span> <span>단호박 100g + 흰살생선(대구 등) 100g (소화 부담이 적은 식단)</span></p>
+            </div>
+        </div>`;
+} else {
+    // 벌크업 메뉴 구성 (기존 코드 유지 가능)
+    dietTitle.innerText = "💪 근육 증량 벌크업 식단";
+    dietMenu.innerHTML = `...`; // 기존 증량 식단 텍스트 삽입
+}
+</script>
 
         </main>
 
@@ -236,7 +249,6 @@
                     <span id="video-modal-title" class="text-sm font-bold text-brand-teal truncate pr-2">가이드 동영상</span>
                     <button onclick="closeVideoModal()" class="text-zinc-400 hover:text-white font-bold text-sm bg-zinc-800 px-3 py-1.5 rounded-lg transition-colors">닫기 ✕</button>
                 </div>
-                <!-- 쇼츠 규격(9:16)에 맞춘 플레이어 컨테이너 -->
                 <div class="aspect-[9/16] bg-black max-h-[65vh] relative mx-auto my-3 w-10/12 rounded-xl overflow-hidden shadow-inner">
                     <iframe id="video-iframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
@@ -260,7 +272,7 @@
             activeTab: 'profile', 
             exercises: [],
             dietTarget: 'diet', 
-            libFilter: { area: '전체', equipment: '전체' }, 
+            libFilter: { area: '', equipment: '' }, // 초기값 빈 문자열로 설정하여 선택 유도
             libPage: 1, 
             libPageSize: 10,
             creator: { authenticated: false }
@@ -278,19 +290,17 @@
                     let fetchedData = [];
                     rows.forEach((row, idx) => {
                         const cols = row.split('\t');
-                        // G열(인덱스 6)인 유튜브 제목이 있어야 정상 데이터로 취급
-                        if (cols.length >= 7 && cols[6].trim() !== '') {
-                        // [수정사항] '가이드 설명' 컬럼을 뺀 새로운 데이터 매핑 구조
-fetchedData.push({
-    id: "ex-" + idx,
-    area: cols[1]?.trim() || "전체",
-    gender: cols[2]?.trim() || "공통",
-    place: cols[3]?.trim() || "헬스장",
-    equipment: cols[4]?.trim() || "맨몸",
-    desc: "지니플렉스 코칭 가이드", // 설명 삭제 시 기본 텍스트
-    ytTitle: cols[5]?.trim() || "지니플렉스 쇼츠", // 열 순서가 하나씩 당겨짐
-    ytUrl: cols[6]?.trim() || ""
-});
+                        // 가이드설명이 제거되었으므로 cols[5]가 제목, cols[6]이 링크 구조
+                        if (cols.length >= 6 && cols[5] && cols[5].trim() !== '') {
+                            fetchedData.push({
+                                id: "ex-" + idx,
+                                area: cols[1]?.trim() || "전체",
+                                gender: cols[2]?.trim() || "공통",
+                                place: cols[3]?.trim() || "헬스장",
+                                equipment: cols[4]?.trim() || "맨몸",
+                                ytTitle: cols[5]?.trim() || "지니플렉스 쇼츠",
+                                ytUrl: cols[6]?.trim() || ""
+                            });
                         }
                     });
                     
@@ -340,7 +350,14 @@ fetchedData.push({
                 }
                 document.getElementById('pane-' + t).classList.toggle('hidden', t !== tabId);
             });
-            if(tabId === 'library') state.libPage = 1;
+            if(tabId === 'library') {
+                state.libPage = 1;
+                // 탭 이동 시 필터값 초기화하여 선택 전 데이터 노출 현상 방지
+                state.libFilter.area = '';
+                state.libFilter.equipment = '';
+                if(document.getElementById('filter-area')) document.getElementById('filter-area').value = '';
+                if(document.getElementById('filter-equipment')) document.getElementById('filter-equipment').value = '';
+            }
             render();
         }
 
@@ -360,42 +377,33 @@ fetchedData.push({
             render(); 
         }
         
-        // 🎬 유튜브 쇼츠 전용 인앱 팝업(모달) 플레이 로직
         function playYoutube(url, title) {
-            if (!url || url.trim() === "") { 
+            if (!url || url.trim() === "" || url === "undefined") { 
                 showToast("등록된 비디오 링크가 없습니다."); 
                 return; 
             }
             
             let videoId = "";
-            // 쇼츠 주소 파싱 (youtube.com/shorts/아이디)
             if (url.includes("shorts/")) {
                 videoId = url.split("shorts/")[1].split("?")[0];
-            } 
-            // 일반 웹 주소 파싱 (youtube.com/watch?v=아이디)
-            else if (url.includes("v=")) {
+            } else if (url.includes("v=")) {
                 videoId = url.split("v=")[1].split("&")[0];
-            } 
-            // 공유용 짧은 주소 파싱 (youtu.be/아이디)
-            else if (url.includes("youtu.be/")) {
+            } else if (url.includes("youtu.be/")) {
                 videoId = url.split("youtu.be/")[1].split("?")[0];
             }
 
             if (videoId) {
-                // 모달 띄우기
                 document.getElementById('video-modal-title').innerText = title || "가이드 영상";
-                // 팝업 화면 내의 iframe에 Embed 형식으로 주소를 쏴줌
                 document.getElementById('video-iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
                 document.getElementById('video-modal').classList.remove('hidden');
             } else {
-                // 파싱이 안 되는 이상한 주소일 경우 새 창으로 열기
                 window.open(url, '_blank'); 
             }
         }
 
         function closeVideoModal() {
             document.getElementById('video-modal').classList.add('hidden');
-            document.getElementById('video-iframe').src = ""; // 소리 끄기
+            document.getElementById('video-iframe').src = ""; 
         }
 
         function setDietTarget(val) { state.dietTarget = val; saveState(); render(); }
@@ -422,11 +430,26 @@ fetchedData.push({
                 btn.className = `py-3 rounded-xl font-bold border transition-colors ${state.place === p ? 'bg-brand-teal text-white border-teal-500' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`;
             });
 
+            const grid = document.getElementById('library-card-grid'); 
+            const pageContainer = document.getElementById('library-pagination-buttons');
+            
+            // 💡 [조건문 추가] 부위와 기구를 모두 선택하기 전에는 데이터 로딩 전면 차단
+            if (!state.libFilter.area || !state.libFilter.equipment) {
+                grid.innerHTML = `
+                    <div class="text-center py-16 px-4 text-sm text-zinc-500 border border-zinc-800 border-dashed rounded-2xl bg-zinc-850/30 leading-relaxed">
+                        <span class="text-3xl block mb-2">🔍</span>
+                        상단의 [운동 부위]와 [운동 기구]를<br>선택하시면 추천 가이드가 나타납니다.
+                    </div>`;
+                document.getElementById('library-page-info').innerText = `선택 대기 중`;
+                pageContainer.innerHTML = "";
+                return;
+            }
+
             let libFiltered = state.exercises.filter(ex => {
                 if (ex.place !== state.place) return false;
                 if (ex.gender !== '공통' && ex.gender !== state.gender) return false;
-                if (state.libFilter.area !== '전체' && ex.area !== state.libFilter.area) return false;
-                if (state.libFilter.equipment !== '전체' && ex.equipment !== state.libFilter.equipment) return false;
+                if (ex.area !== state.libFilter.area) return false;
+                if (ex.equipment !== state.libFilter.equipment) return false;
                 return true;
             });
             
@@ -442,7 +465,6 @@ fetchedData.push({
             
             document.getElementById('library-page-info').innerText = `전체 ${totalItems}개 중 ${start + 1} - ${start + paged.length} 표시`;
 
-            const pageContainer = document.getElementById('library-pagination-buttons');
             pageContainer.innerHTML = "";
             for (let p = 1; p <= totalPages; p++) {
                 const isCur = (p === state.libPage);
@@ -453,36 +475,47 @@ fetchedData.push({
                 `;
             }
 
-            const grid = document.getElementById('library-card-grid'); 
             grid.innerHTML = "";
             
             if (paged.length === 0) {
                 grid.innerHTML = `
                     <div class="text-center py-12 px-4 text-sm text-zinc-500 border border-zinc-800 border-dashed rounded-2xl bg-zinc-850/50 leading-relaxed">
                         <span class="text-3xl block mb-2">😅</span>
-                        선택하신 [${state.gender} / ${state.place}] 조건에<br>등록된 영상이 없습니다.
+                        선택하신 [${state.gender} / ${state.place}] 조건에<br>등록된 가이드 영상이 없습니다.
                     </div>`;
             } else {
                 paged.forEach(ex => {
-                    const hasYt = ex.ytUrl && ex.ytUrl.trim().length > 0;
-                    grid.innerHTML += `
-                        <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-4 shadow-sm space-y-3">
-                            <div>
-                                <div class="flex gap-1.5 mb-2">
-                                    <span class="bg-zinc-800 text-brand-teal text-[10px] font-bold px-2 py-1 rounded-md border border-zinc-700">${ex.area}</span>
-                                    <span class="bg-zinc-800 text-zinc-300 text-[10px] font-bold px-2 py-1 rounded-md border border-zinc-700">${ex.equipment}</span>
-                                </div>
-                                <h3 class="font-bold text-base text-white tracking-tight">${ex.ytTitle}</h3>
-                            </div>
-                            <p class="text-xs text-zinc-400 leading-relaxed bg-zinc-900 p-3 rounded-xl border border-zinc-800">${ex.desc || '가이드 설명이 없습니다.'}</p>
-                            
-                            <!-- 인앱 팝업 재생 버튼으로 연결 -->
-                            <button onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')" class="w-full py-3 rounded-xl text-sm font-bold flex justify-center items-center gap-1.5 transition-transform active:scale-95 ${hasYt ? 'bg-[#ff0000] text-white shadow-md' : 'bg-zinc-800 text-zinc-500 border border-zinc-700 pointer-events-none'}">
-                                ${hasYt ? '▶️ 쇼츠 영상 바로보기' : '영상 준비중'}
-                            </button>
-                        </div>
-                    `;
-                });
+    let videoId = "";
+    if (ex.ytUrl.includes("shorts/")) videoId = ex.ytUrl.split("shorts/")[1].split("?")[0];
+    else if (ex.ytUrl.includes("v=")) videoId = ex.ytUrl.split("v=")[1].split("&")[0];
+    else if (ex.ytUrl.includes("youtu.be/")) videoId = ex.ytUrl.split("youtu.be/")[1].split("?")[0];
+    
+    const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500';
+
+    grid.innerHTML += `
+        <div class="bg-zinc-850 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm hover:border-brand-teal transition-all">
+            <!-- 📺 썸네일 클릭 시 영상 재생 -->
+            <div class="relative cursor-pointer group aspect-[16/9] bg-zinc-950 overflow-hidden" onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')">
+                <img src="${thumbUrl}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="bg-black/70 rounded-full p-3.5 group-hover:bg-brand-teal/90 group-hover:scale-110 transition-all duration-300">
+                        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 space-y-2">
+                <div class="flex gap-1.5">
+                    <span class="bg-zinc-800 text-brand-teal text-[10px] font-bold px-2 py-0.5 rounded-md border border-zinc-700">${ex.area}</span>
+                    <span class="bg-zinc-800 text-zinc-300 text-[10px] font-bold px-2 py-0.5 rounded-md border border-zinc-700">${ex.equipment}</span>
+                </div>
+                <!-- 💡 제목에 클릭 이벤트와 링크 스타일을 걸어 제목만 눌러도 볼 수 있게 수정, 코칭가이드 항목 제거 -->
+                <h3 onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')" class="font-extrabold text-base text-white tracking-tight leading-snug cursor-pointer hover:text-brand-teal hover:underline transition-all">${ex.ytTitle}</h3>
+            </div>
+        </div>
+    `;
+});
+</script>
             }
 
             ['diet', 'bulk'].forEach(d => {
