@@ -408,31 +408,41 @@
                     grid.innerHTML = `<div class="text-center py-12 px-4 text-sm text-zinc-500 border border-zinc-800 border-dashed rounded-2xl bg-zinc-850/50">검색 조건에 일치하는 영상이 없습니다.</div>`;
                 } else {
                     paged.forEach(ex => {
-                        let videoId = "";
-                        if (ex.ytUrl.includes("shorts/")) videoId = ex.ytUrl.split("shorts/")[1].split("?")[0];
-                        else if (ex.ytUrl.includes("v=")) videoId = ex.ytUrl.split("v=")[1].split("&")[0];
-                        else if (ex.ytUrl.includes("youtu.be/")) videoId = ex.ytUrl.split("youtu.be/")[1].split("?")[0];
-                        const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500';
+    let videoId = "";
+    if (ex.ytUrl.includes("shorts/")) videoId = ex.ytUrl.split("shorts/")[1].split("?")[0];
+    else if (ex.ytUrl.includes("v=")) videoId = ex.ytUrl.split("v=")[1].split("&")[0];
+    else if (ex.ytUrl.includes("youtu.be/")) videoId = ex.ytUrl.split("youtu.be/")[1].split("?")[0];
+    const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=150';
 
-                        grid.innerHTML += `
-                            <div class="bg-zinc-850 border border-zinc-800 rounded-2xl overflow-hidden shadow-sm hover:border-brand-teal transition-all">
-                                <div class="relative cursor-pointer group aspect-[16/9] bg-zinc-950 overflow-hidden" onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')">
-                                    <img src="${thumbUrl}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <div class="bg-black/70 rounded-full p-3.5 group-hover:bg-brand-teal/90 transition-all">
-                                            <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-4 space-y-2">
-                                    <div class="flex gap-1.5">
-                                        <span class="bg-zinc-800 text-brand-teal text-[10px] font-bold px-2 py-0.5 rounded-md border border-zinc-700">${ex.area}</span>
-                                        <span class="bg-zinc-800 text-zinc-300 text-[10px] font-bold px-2 py-0.5 rounded-md border border-zinc-700">${ex.equipment}</span>
-                                    </div>
-                                    <h3 onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')" class="font-extrabold text-base text-white tracking-tight leading-snug cursor-pointer hover:text-brand-teal hover:underline transition-all">${ex.ytTitle}</h3>
-                                </div>
-                            </div>`;
-                    });
+    // 💡 image_5305ef.jpg 스타일의 가로형 컴팩트 레이아웃 적용
+    grid.innerHTML += `
+        <div class="bg-zinc-850 border border-zinc-800/60 rounded-xl overflow-hidden p-2 flex gap-3 items-center shadow-sm hover:border-brand-teal transition-all cursor-pointer" onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')">
+            
+            <!-- 📺 왼쪽: 컴팩트한 16:9 비율 썸네일 구역 (크기를 줄여 한 라인으로 배치) -->
+            <div class="relative w-32 aspect-[16/9] bg-zinc-950 rounded-lg overflow-hidden shrink-0 shadow-inner group">
+                <img src="${thumbUrl}" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity">
+                <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                    <div class="bg-black/60 rounded-full p-1.5 text-brand-teal">
+                        <svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 📝 오른쪽: 제목 및 필터 태그 구역 -->
+            <div class="flex-grow min-w-0 space-y-1.5">
+                <!-- 운동 부위 및 기구 태그 배치를 위로 올려 시인성 확보 -->
+                <div class="flex gap-1 flex-wrap">
+                    <span class="bg-zinc-900 text-brand-teal text-[9px] font-bold px-1.5 py-0.5 rounded border border-zinc-800">${ex.area}</span>
+                    <span class="bg-zinc-900 text-zinc-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-zinc-800">${ex.equipment}</span>
+                </div>
+                <!-- 제목 (2줄까지 깔끔하게 제한되도록 처리하고 말줄임 스타일 적용) -->
+                <h3 class="font-bold text-xs sm:text-sm text-white tracking-tight leading-snug line-clamp-2 group-hover:text-brand-teal transition-colors">
+                    ${ex.ytTitle}
+                </h3>
+            </div>
+            
+        </div>`;
+});
                 }
             }
 
