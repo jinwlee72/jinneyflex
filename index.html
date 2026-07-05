@@ -84,7 +84,7 @@
                 </div>
             </section>
 
-            <!-- 🎬 2. 운동영상 패널 -->
+            <!-- 🎬 2. 운동영상 패널 (검색 기능 탑재) -->
             <section id="pane-library" class="fade-in space-y-4 hidden">
                 <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-4 shadow-sm sticky top-16 z-30">
                     <div class="grid grid-cols-2 gap-2 text-sm">
@@ -92,10 +92,7 @@
                             <option value="">운동부위 선택</option>
                             <option value="가슴">가슴</option><option value="등">등</option><option value="하체">하체</option><option value="어깨">어깨</option><option value="팔">팔</option><option value="힙/엉덩이">힙/엉덩이</option><option value="복근">복근</option><option value="전신">전신</option>
                         </select>
-                        <select id="filter-equipment" onchange="applyLibraryFilters()" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-zinc-200 font-medium outline-none focus:border-brand-teal">
-                            <option value="">운동기구 선택</option>
-                            <option value="바벨">바벨</option><option value="덤벨">덤벨</option><option value="케이블">케이블</option><option value="밴드">밴드</option><option value="맨몸">맨몸</option><option value="머신">머신</option>
-                        </select>
+                        <input id="filter-search" type="text" oninput="applyLibraryFilters()" placeholder="🔍 운동명/기구 검색" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-zinc-200 font-medium outline-none focus:border-brand-teal text-xs">
                     </div>
                 </div>
                 <div id="library-card-grid" class="space-y-4"></div>
@@ -164,44 +161,30 @@
                 </div>
             </section>
 
-            <!-- ⚙️ 5. 스튜디오 패널 -->
-            <section id="pane-studio" class="fade-in space-y-4 hidden">
-                <div id="studio-auth-box" class="bg-zinc-850 border border-zinc-800 rounded-2xl p-6 shadow-sm text-center space-y-4">
-                    <span class="text-4xl block">🔐</span>
-                    <h2 class="text-base font-bold text-white">지니플렉스 스튜디오</h2>
-                    <div class="space-y-2 pt-2">
-                        <input id="studio-pass" type="password" placeholder="비밀번호 입력" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-center text-sm text-white focus:outline-none focus:border-brand-teal">
-                        <button onclick="loginStudio()" class="w-full bg-brand-teal text-white py-3 rounded-xl font-bold text-sm shadow-md active:scale-95 transition-transform">인증하기</button>
-                    </div>
-                </div>
-                <div id="studio-main-content" class="hidden space-y-4">
-                    <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-6 shadow-sm text-center space-y-4">
-                        <h3 class="text-base font-bold text-white">📊 구글 시트 데이터베이스 관리</h3>
-                        <button onclick="window.open('https://docs.google.com/spreadsheets/', '_blank')" class="w-full py-3.5 bg-zinc-200 text-zinc-900 font-extrabold rounded-xl text-sm shadow-sm active:scale-95 transition-transform">내 구글 스프레드시트 열기 ➡️</button>
-                    </div>
-                </div>
-            </section>
-
         </main>
 
-        <!-- 📱 하단 네비게이션 바 -->
+        <!-- 📱 하단 네비게이션 바 (스튜디오 탭 삭제 완료) -->
         <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-zinc-900 border-t border-zinc-800 flex justify-around py-2.5 z-40">
             <button id="tab-profile" onclick="switchTab('profile')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-brand-teal"><span>👤</span><span>프로필</span></button>
             <button id="tab-library" onclick="switchTab('library')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-zinc-500"><span>🎬</span><span>운동영상</span></button>
             <button id="tab-protein" onclick="switchTab('protein')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-zinc-500"><span>💊</span><span>보충제</span></button>
             <button id="tab-diet" onclick="switchTab('diet')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-zinc-500"><span>🍱</span><span>식단</span></button>
-            <button id="tab-studio" onclick="switchTab('studio')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-zinc-500"><span>⚙️</span><span>스튜디오</span></button>
         </nav>
 
-        <!-- 📺 인앱 유튜브 쇼츠 팝업 플레이어 -->
+        <!-- 📺 인앱 유튜브 쇼츠 팝업 플레이어 (이전/다음 재생 컨트롤 탑재) -->
         <div id="video-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/95 backdrop-blur-sm flex items-center justify-center p-4 fade-in">
             <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl">
                 <div class="p-3.5 border-b border-zinc-800 flex justify-between items-center bg-zinc-950">
                     <span id="video-modal-title" class="text-sm font-bold text-brand-teal truncate pr-2">가이드 동영상</span>
                     <button onclick="closeVideoModal()" class="text-zinc-400 hover:text-white font-bold text-sm bg-zinc-800 px-3 py-1.5 rounded-lg">닫기 ✕</button>
                 </div>
-                <div class="aspect-[9/16] bg-black max-h-[65vh] relative mx-auto my-3 w-10/12 rounded-xl overflow-hidden">
+                <div class="aspect-[9/16] bg-black max-h-[60vh] relative mx-auto my-3 w-10/12 rounded-xl overflow-hidden">
                     <iframe id="video-iframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <!-- 💡 연속 시청을 위한 하단 네비게이션 컨트롤러 패널 -->
+                <div class="p-3 bg-zinc-950 border-t border-zinc-800 grid grid-cols-2 gap-2 text-xs font-bold">
+                    <button id="btn-prev-video" onclick="playAdjacentVideo(-1)" class="py-2.5 bg-zinc-800 text-zinc-300 rounded-xl active:scale-95 transition-all hover:bg-zinc-700">⏮️ 이전 가이드</button>
+                    <button id="btn-next-video" onclick="playAdjacentVideo(1)" class="py-2.5 bg-brand-teal text-white rounded-xl active:scale-95 transition-all hover:bg-teal-600">다음 가이드 이어보기 ⏭️</button>
                 </div>
             </div>
         </div>
@@ -213,7 +196,8 @@
 
         let state = {
             gender: '', place: '', activeTab: 'profile', exercises: [], dietTarget: 'diet', 
-            libFilter: { area: '', equipment: '' }, libPage: 1, libPageSize: 10, creator: { authenticated: false }
+            libFilter: { area: '', search: '' }, libPage: 1, libPageSize: 10,
+            currentVideoIndex: -1, currentVideoList: [] // 연속 재생 핸들링 메모리 컨테이너
         };
 
         function saveState() {
@@ -272,31 +256,32 @@
 
         function switchTab(tabId) {
             state.activeTab = tabId;
-            ['profile', 'library', 'protein', 'diet', 'studio'].forEach(t => {
+            
+            if (tabId === 'profile') {
+                state.gender = ''; state.place = '';
+                sessionStorage.removeItem('j_gender_session');
+                sessionStorage.removeItem('j_place_session');
+                refreshProfileButtons();
+            }
+
+            ['profile', 'library', 'protein', 'diet'].forEach(t => {
                 const btn = document.getElementById('tab-' + t);
-                btn.className = `flex flex-col items-center gap-1 text-[10px] font-bold ${t === tabId ? 'text-brand-teal' : 'text-zinc-500'}`;
-                document.getElementById('pane-' + t).classList.toggle('hidden', t !== tabId);
+                if (btn) btn.className = `flex flex-col items-center gap-1 text-[10px] font-bold ${t === tabId ? 'text-brand-teal' : 'text-zinc-500'}`;
+                const pane = document.getElementById('pane-' + t);
+                if (pane) pane.classList.toggle('hidden', t !== tabId);
             });
+
             if(tabId === 'library') {
                 state.libPage = 1;
-                state.libFilter.area = ''; state.libFilter.equipment = '';
+                state.libFilter.area = ''; state.libFilter.search = '';
                 if(document.getElementById('filter-area')) document.getElementById('filter-area').value = '';
-                if(document.getElementById('filter-equipment')) document.getElementById('filter-equipment').value = '';
+                if(document.getElementById('filter-search')) document.getElementById('filter-search').value = '';
             }
             render();
         }
 
-        function setProfileGender(val) { 
-            state.gender = val; 
-            saveState(); 
-            refreshProfileButtons();
-        }
-
-        function setProfilePlace(val) { 
-            state.place = val; 
-            saveState(); 
-            refreshProfileButtons();
-        }
+        function setProfileGender(val) { state.gender = val; saveState(); refreshProfileButtons(); }
+        function setProfilePlace(val) { state.place = val; saveState(); refreshProfileButtons(); }
 
         function refreshProfileButtons() {
             ['남성', '여성'].forEach(g => {
@@ -322,7 +307,7 @@
         
         function applyLibraryFilters() { 
             state.libFilter.area = document.getElementById('filter-area').value; 
-            state.libFilter.equipment = document.getElementById('filter-equipment').value; 
+            state.libFilter.search = document.getElementById('filter-search').value.trim().toLowerCase(); 
             state.libPage = 1; 
             render(); 
         }
@@ -333,6 +318,7 @@
             render(); 
         }
         
+        // 🎬 정밀 인앱 동영상 재생 메커니즘 (리스트 추적형)
         function playYoutube(url, title) {
             if (!url || url.trim() === "" || url === "undefined") { 
                 showToast("등록된 비디오 링크가 없습니다."); return; 
@@ -343,10 +329,28 @@
             else if (url.includes("youtu.be/")) videoId = url.split("youtu.be/")[1].split("?")[0];
 
             if (videoId) {
+                // 현재 재생 리스트 내의 인덱스 매칭 스캔
+                state.currentVideoIndex = state.currentVideoList.findIndex(item => item.ytUrl === url);
+                
                 document.getElementById('video-modal-title').innerText = title || "가이드 영상";
                 document.getElementById('video-iframe').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
                 document.getElementById('video-modal').classList.remove('hidden');
+                
+                // 버튼 인풋 인터페이스 디스플레이 유효성 실시간 스캔 예외 필터링
+                document.getElementById('btn-prev-video').style.opacity = state.currentVideoIndex <= 0 ? "0.3" : "1";
+                document.getElementById('btn-next-video').style.opacity = state.currentVideoIndex >= state.currentVideoList.length - 1 ? "0.3" : "1";
             } else { window.open(url, '_blank'); }
+        }
+
+        // ⏭️ 이어보기 및 이전 영상 재생 핸들러
+        function playAdjacentVideo(offset) {
+            const nextIdx = state.currentVideoIndex + offset;
+            if (nextIdx >= 0 && nextIdx < state.currentVideoList.length) {
+                const nextVid = state.currentVideoList[nextIdx];
+                playYoutube(nextVid.ytUrl, nextVid.ytTitle);
+            } else {
+                showToast(offset > 0 ? "마지막 가이드 영상입니다." : "첫 번째 가이드 영상입니다.");
+            }
         }
 
         function closeVideoModal() {
@@ -355,36 +359,35 @@
         }
 
         function setDietTarget(val) { state.dietTarget = val; saveState(); render(); }
-        
-        function loginStudio() { 
-            const passInput = document.getElementById('studio-pass').value;
-            if (passInput === "1234") { 
-                state.creator.authenticated = true; 
-                document.getElementById('studio-pass').value = ""; 
-                showToast("스튜디오 인증에 성공했습니다."); render(); 
-            } else { showToast("비밀번호가 일치하지 않습니다."); } 
-        }
 
         function render() {
             const grid = document.getElementById('library-card-grid'); 
             const pageContainer = document.getElementById('library-pagination-buttons');
             
-            if (!state.libFilter.area || !state.libFilter.equipment) {
+            if (!state.libFilter.area && !state.libFilter.search) {
                 grid.innerHTML = `
                     <div class="text-center py-16 px-4 text-sm text-zinc-500 border border-zinc-800 border-dashed rounded-2xl bg-zinc-850/30 leading-relaxed">
-                        <span class="text-3xl block mb-2">🔍</span>상단의 [운동부위]와 [운동기구]를<br>모두 고르시면 가이드가 나타납니다.
+                        <span class="text-3xl block mb-2">🔍</span>상단의 [운동부위]를 선택하거나<br>[검색창]에 키워드를 입력해 주세요.
                     </div>`;
                 document.getElementById('library-page-info').innerText = `선택 대기 중`;
                 pageContainer.innerHTML = "";
+                state.currentVideoList = [];
             } else {
                 let libFiltered = state.exercises.filter(ex => {
-                    if (ex.place !== state.place) return false;
-                    if (ex.gender !== '공통' && ex.gender !== state.gender) return false;
-                    if (ex.area !== state.libFilter.area) return false;
-                    if (ex.equipment !== state.libFilter.equipment) return false;
+                    if (state.place && ex.place !== state.place) return false;
+                    if (state.gender && ex.gender !== '공통' && ex.gender !== state.gender) return false;
+                    if (state.libFilter.area && ex.area !== state.libFilter.area) return false;
+                    if (state.libFilter.search) {
+                        const targetTitle = ex.ytTitle.toLowerCase();
+                        const targetEquip = ex.equipment.toLowerCase();
+                        if (!targetTitle.includes(state.libFilter.search) && !targetEquip.includes(state.libFilter.search)) return false;
+                    }
                     return true;
                 });
                 libFiltered.reverse();
+                
+                // 💡 플레이리스트 이어보기를 유도하기 위해 현재 활성화된 검색 결과 집합을 메모리에 등록
+                state.currentVideoList = libFiltered;
 
                 const totalItems = libFiltered.length;
                 const totalPages = Math.ceil(totalItems / state.libPageSize) || 1;
@@ -402,7 +405,7 @@
 
                 grid.innerHTML = "";
                 if (paged.length === 0) {
-                    grid.innerHTML = `<div class="text-center py-12 px-4 text-sm text-zinc-500 border border-zinc-800 border-dashed rounded-2xl bg-zinc-850/50">등록된 가이드 영상이 없습니다.</div>`;
+                    grid.innerHTML = `<div class="text-center py-12 px-4 text-sm text-zinc-500 border border-zinc-800 border-dashed rounded-2xl bg-zinc-850/50">검색 조건에 일치하는 영상이 없습니다.</div>`;
                 } else {
                     paged.forEach(ex => {
                         let videoId = "";
@@ -432,6 +435,13 @@
                     });
                 }
             }
+
+            ['diet', 'bulk'].forEach(d => {
+                const btn = document.getElementById('diet-target-' + d);
+                if (btn) {
+                    btn.className = `py-2.5 rounded-lg font-bold text-xs transition-colors ${state.dietTarget === d ? 'bg-brand-teal text-white border-teal-500' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`;
+                }
+            });
 
             const dietTitle = document.getElementById('diet-list-title');
             const dietMenu = document.getElementById('diet-menu-container');
@@ -464,9 +474,6 @@
                         </div>
                     </div>`;
             }
-
-            document.getElementById('studio-auth-box').classList.toggle('hidden', state.creator.authenticated);
-            document.getElementById('studio-main-content').classList.toggle('hidden', !state.creator.authenticated);
         }
     </script>
 </body>
