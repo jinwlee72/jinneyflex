@@ -102,27 +102,23 @@
                 </div>
             </section>
 
-            <!-- 💊 3. 보충제 패널 (엑셀 데이터 기반 전면 대량 보강) -->
+            <!-- 💊 3. 보충제 패널 -->
             <section id="pane-protein" class="fade-in space-y-4 hidden">
                 <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-4 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-zinc-800 pb-2.5">
                         <span class="text-lg">💊</span>
                         <h2 class="text-sm font-bold text-white">서프리먼트 백과 및 섭취 가이드</h2>
                     </div>
-
-                    <!-- 탭 컨트롤러 (상세리스트 / 추천조합 / 스케줄) -->
                     <div class="bg-zinc-900 p-1 rounded-xl border border-zinc-800 grid grid-cols-3 gap-1 text-center text-[11px] font-bold">
                         <button id="btn-pro-sub" onclick="setProteinSubTab('sub')" class="py-2 rounded-lg bg-brand-teal text-white">성분 대백과</button>
                         <button id="btn-pro-mix" onclick="setProteinSubTab('mix')" class="py-2 rounded-lg bg-zinc-800 text-zinc-400">목적별 조합</button>
                         <button id="btn-pro-time" onclick="setProteinSubTab('time')" class="py-2 rounded-lg bg-zinc-800 text-zinc-400">타임 스케줄</button>
                     </div>
-
-                    <!-- 서브 패널 컨테이너 -->
                     <div id="protein-content-area" class="space-y-3.5"></div>
                 </div>
             </section>
 
-            <!-- 🍱 4. 식단 패널 (엑셀 가이드라인 기반 전면 다각화) -->
+            <!-- 🍱 4. 식단 패널 -->
             <section id="pane-diet" class="fade-in space-y-4 hidden">
                 <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-4 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-zinc-800 pb-2.5">
@@ -175,7 +171,6 @@
             currentVideoIndex: -1, currentVideoList: []
         };
 
-        // 엑셀 보충제 탭 원본 딕셔너리 데이터베이스 데이터 매핑
         const rawSupplements = [
             { name: "단백질(웨이)", goal: "근육 성장, 회복", dose: "20~40g", time: "운동 후 또는 단백질 부족 시", synergy: "크레아틴", caution: "유당불내증은 아이솔레이트 고려" },
             { name: "카제인", goal: "회복, 야간 단백질 공급", dose: "20~40g", time: "취침 전", synergy: "물 또는 우유", caution: "소화가 느림" },
@@ -345,7 +340,6 @@
             renderProteinTabContent();
         }
 
-        // 🧬 보충제 서브메뉴 데이터 결합 렌더러
         function renderProteinTabContent() {
             const container = document.getElementById('protein-content-area');
             if(!container) return;
@@ -388,7 +382,7 @@
             } else if (state.proteinSubTab === 'time') {
                 container.innerHTML = `
                     <div class="bg-zinc-900 p-3.5 rounded-xl border border-zinc-800 space-y-2.5 text-xs">
-                        <h4 class="font-bold text-white text-center pb-2 border-b border-zinc-800">📊 엑셀 정석 하루 권장 섭취 스케줄</h4>
+                        <h4 class="font-bold text-white text-center pb-2 border-b border-zinc-800">📊 하루 권장 섭취 스케줄</h4>
                         <div class="space-y-2">
                             <p class="flex items-start gap-2"><span class="text-brand-teal font-bold w-20 shrink-0">🌅 아침 식후</span> <span class="text-zinc-300">종합비타민, 비타민 D, 오메가3</span></p>
                             <p class="flex items-start gap-2"><span class="text-brand-teal font-bold w-20 shrink-0">💪 운동 전(30분)</span> <span class="text-zinc-300">카페인, 시트룰린, 베타알라닌</span></p>
@@ -396,9 +390,6 @@
                             <p class="flex items-start gap-2"><span class="text-brand-teal font-bold w-20 shrink-0">⚡ 운동 직후</span> <span class="text-zinc-300">웨이 프로틴, 크레아틴 조합</span></p>
                             <p class="flex items-start gap-2"><span class="text-brand-teal font-bold w-20 shrink-0">🌙 저녁 식후</span> <span class="text-zinc-300">오메가3 추가 보충</span></p>
                             <p class="flex items-start gap-2"><span class="text-brand-teal font-bold w-20 shrink-0">🛌 취침 전</span> <span class="text-zinc-300">카제인 단백질 파우더 또는 마그네슘</span></p>
-                        </div>
-                        <div class="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-[11px] text-zinc-400 mt-2">
-                            💡 <strong>크레아틴/웨이프로틴/카페인</strong>은 스포츠 과학 분야에서 근력 향상과 회복에 일관되게 가장 강력한 근거를 가진 3대 최우선 보충제입니다. 복용 시 다량의 수분을 반드시 확보해 주세요.
                         </div>
                     </div>`;
             }
@@ -454,7 +445,7 @@
                         if (ex.ytUrl.includes("shorts/")) videoId = ex.ytUrl.split("shorts/")[1].split("?")[0];
                         else if (ex.ytUrl.includes("v=")) videoId = ex.ytUrl.split("v=")[1].split("&")[0];
                         else if (ex.ytUrl.includes("youtu.be/")) videoId = ex.ytUrl.split("youtu.be/")[1].split("?")[0];
-                        const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=150';
+                        const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500';
 
                         grid.innerHTML += `
                             <div class="bg-zinc-850 border border-zinc-800/60 rounded-xl overflow-hidden p-2 flex gap-3 items-center shadow-sm hover:border-brand-teal transition-all cursor-pointer" onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')">
@@ -480,55 +471,129 @@
                 }
             }
 
-            // 탭 버튼 라이팅 컬러 제어
             ['diet', 'bulk'].forEach(d => {
                 const btn = document.getElementById('diet-target-' + d);
                 if (btn) btn.className = `py-2.5 rounded-lg font-bold text-xs transition-colors ${state.dietTarget === d ? 'bg-brand-teal text-white border-teal-500' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`;
             });
 
-            // 🍱 식단 가이드 원본 디테일 결합 가속화
+            // 🍱 엑셀 시트 100% 매핑 동적 식단 구조화 영역
             const dietMenu = document.getElementById('diet-menu-container');
             if (state.dietTarget === 'diet') {
                 dietMenu.innerHTML = `
-                    <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 space-y-3.5 text-xs">
+                    <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 space-y-4 text-xs leading-relaxed">
                         <div class="border-b border-zinc-800 pb-2.5">
                             <span class="text-[10px] font-bold text-brand-teal bg-zinc-800 px-2 py-0.5 rounded mb-1 inline-block">수면 4시간 전 금식 정석</span>
-                            <p class="text-[11px] text-zinc-400 leading-relaxed">지방 합성 효소 억제를 위해 <strong>저녁 식사는 늦어도 밤 7시 30분(취침 전 4시간 마지노선)까지</strong> 마무리하는 것을 원칙으로 합니다.</p>
+                            <p class="text-[11px] text-zinc-400">지방 합성 효소 분비를 차단하기 위해 <strong>저녁 식사는 늦어도 밤 7시 30분(취침 전 최소 4시간 여유)까지</strong> 완결하는 식단 구조입니다.</p>
                         </div>
-                        <div class="space-y-2 text-zinc-400">
-                            <p class="flex items-start gap-2"><span class="text-zinc-200 font-bold w-12 shrink-0">⏰ 아침:</span> <span>오트밀 40g + 닭가슴살 100g + 사과 반쪽 (인슐린 제어형 복합당 시동)</span></p>
-                            <p class="flex items-start gap-2"><span class="text-zinc-200 font-bold w-12 shrink-0">⏰ 점심:</span> <span>현미밥 130g + 소고기 우둔살 120g + 녹색 야채 믹스 (철분 및 지속적 당원)</span></p>
-                            <p class="flex items-start gap-2"><span class="text-zinc-200 font-bold w-12 shrink-0">⏰ 운후:</span> <span>단백질 쉐이크 1잔 + 바나나 1개 (기회의 창 아미노산 급속 충전)</span></p>
-                            <p class="flex items-start gap-2"><span class="text-zinc-200 font-bold w-12 shrink-0">⏰ 저녁:</span> <span>단호박 100g + 흰살생선 100g (수면 중 대사 부담을 최소화하는 클린식)</span></p>
+                        
+                        <!-- 6단계 상세 가이드 라인 표 기전 연동 -->
+                        <div class="space-y-3">
+                            <div class="border-l-2 border-brand-teal pl-2">
+                                <p class="text-zinc-200 font-bold">1. 아침 식사 (Breakfast)</p>
+                                <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>목표:</strong> 밤새 소모된 에너지 보충, 단백질 공급, 오전 집중력 향상</p>
+                                <p class="text-[11px] text-zinc-300">• <strong>예시 식단:</strong> 오트밀 100g (복합 탄수화물), 달걀 3개 (고품질 단백질), 그릭요거트 (단백질+프로바이오틱스), 바나나 1개 (빠른 에너지), 아몬드 한 줌 (건강한 지방), 베리류, 통밀빵, 우유, 닭가슴살</p>
+                            </div>
+
+                            <div class="border-l-2 border-brand-teal pl-2">
+                                <p class="text-zinc-200 font-bold">2. 점심 식사 (Lunch)</p>
+                                <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>목표:</strong> 오후 운동을 위한 에너지 확보, 근육 회복 준비</p>
+                                <p class="text-[11px] text-zinc-300">• <strong>예시 식단:</strong> 현미밥 250g (탄수화물), 닭가슴살 200g (단백질), 브로콜리 (채소), 올리브오일 1스푼 | 소고기, 연어, 참치, 고구마, 감자, 파스타, 시금치, 샐러드, 아스파라거스 조합 가능</p>
+                            </div>
+
+                            <div class="border-l-2 border-brand-teal pl-2">
+                                <p class="text-zinc-200 font-bold">3. 운동 전 식사 (Pre-Workout)</p>
+                                <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>타이밍:</strong> 운동 1~2시간 전 가벼운 공급</p>
+                                <p class="text-[11px] text-zinc-300">• <strong>추천 음식:</strong> 바나나, 고구마, 오트밀, 현미밥, 닭가슴살, 그릭요거트</p>
+                                <p class="text-rose-400/90 text-[10px]">• <strong>피해야 하는 음식:</strong> 튀김, 과도한 지방 성분, 위장에 무리를 주는 과식</p>
+                            </div>
+
+                            <div class="border-l-2 border-brand-teal pl-2">
+                                <p class="text-zinc-200 font-bold">4. 운동 직후 식사 (Post-Workout)</p>
+                                <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>목표:</strong> 글리코겐 회복, 근육 회복, 단백질 합성 촉진 (고품질 단백질 20~40g 필수)</p>
+                                <p class="text-[11px] text-zinc-300">• <strong>예시 식단:</strong> 웨이 프로틴 1스쿱 (빠른 단백질 공급), 바나나 (글리코겐 회복), 흰쌀밥 (탄수화물 보충), 닭가슴살 (근육 회복) 또는 초코우유 조합</p>
+                            </div>
+
+                            <div class="border-l-2 border-brand-teal pl-2">
+                                <p class="text-zinc-200 font-bold">5. 저녁 식사 (Dinner)</p>
+                                <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>목표:</strong> 하루 영양 균형 유지 및 취침 전 근육 안정 회복</p>
+                                <p class="text-[11px] text-zinc-300">• <strong>예시 식단:</strong> 연어 200g, 고구마, 샐러드, 아보카도 주축 구성 | 소고기, 닭가슴살, 현미밥 복합 섭취 최적화</p>
+                            </div>
+
+                            <div class="border-l-2 border-brand-teal pl-2">
+                                <p class="text-zinc-200 font-bold">6. 취침 전 식사 (Before Bed)</p>
+                                <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>효과:</strong> 취침 전 카제인 단백질(약 30~40g)은 밤사이 영양을 서서히 공급하여 근육 단백질 합성을 영리하게 지원합니다.</p>
+                                <p class="text-[11px] text-zinc-300">• <strong>추천 음식:</strong> 카제인 단백질, 그릭요거트, 코티지 치즈, 우유</p>
+                            </div>
                         </div>
                     </div>`;
             } else {
                 dietMenu.innerHTML = `
                     <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 space-y-4 text-xs leading-relaxed">
                         <div class="border-b border-zinc-800 pb-2.5">
-                            <span class="text-[10px] font-bold text-brand-teal bg-zinc-800 px-2 py-0.5 rounded mb-1 inline-block">린 벌크(Lean Bulk) 대원칙</span>
-                            <p class="text-[11px] text-zinc-400">유지 칼로리보다 약 <strong>200~400kcal 상회하는 칼로리 흑자</strong> 상태를 유지하며 주당 체중의 0.25~0.5% 증가를 목표로 합니다. 단백질은 3~4시간 간격으로 분할 섭취하세요.</p>
-                        </div>
-                        
-                        <div class="space-y-2">
-                            <h4 class="font-bold text-white border-l-2 border-brand-teal pl-1.5 mb-1 text-[11px]">⏳ 하루 식단 예시 (약 3,000 kcal 타임라인)</h4>
-                            <p class="flex items-start gap-2 text-zinc-400"><span class="text-zinc-200 font-bold w-12 shrink-0">아침:</span> <span>오트밀 + 달걀 + 바나나 + 그릭요거트 (에너지 보충)</span></p>
-                            <p class="flex items-start gap-2 text-zinc-400"><span class="text-zinc-200 font-bold w-12 shrink-0">오전간식:</span> <span>견과류 + 우유 (양질의 불포화지방산)</span></p>
-                            <p class="flex items-start gap-2 text-zinc-400"><span class="text-zinc-200 font-bold w-12 shrink-0">점심:</span> <span>현미밥 + 닭가슴살 + 브로콜리 (탄단지 밸런스)</span></p>
-                            <p class="flex items-start gap-2 text-zinc-400"><span class="text-zinc-200 font-bold w-12 shrink-0">운동전:</span> <span>고구마 + 닭가슴살 (강력한 글리코겐 탑업)</span></p>
-                            <p class="flex items-start gap-2 text-zinc-400"><span class="text-zinc-200 font-bold w-12 shrink-0">운동직후:</span> <span>웨이 프로틴 1스쿱 + 바나나 (빠른 아미노산 공급)</span></p>
-                            <p class="flex items-start gap-2 text-zinc-400"><span class="text-zinc-200 font-bold w-12 shrink-0">저녁:</span> <span>연어 + 현미밥 + 샐러드 (영양 균형 회복)</span></p>
-                            <p class="flex items-start gap-2 text-zinc-400"><span class="text-zinc-200 font-bold w-12 shrink-0">취침전:</span> <span>카제인 단백질 또는 그릭요거트 (지속적 합성 지원)</span></p>
+                            <span class="text-[10px] font-bold text-brand-teal bg-zinc-800 px-2 py-0.5 rounded mb-1 inline-block">벌크업(Bulking) 대원칙</span>
+                            <p class="text-[11px] text-zinc-400">적절한 칼로리 흑자(<strong>유지 칼로리보다 약 200~400kcal 추가</strong>), 충분한 단백질, 적절한 탄수화물, 건강한 지방을 꾸준히 공급하여 체지방 증가를 최소화하는 린벌크 구조입니다.</p>
                         </div>
 
-                        <div class="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 space-y-1 text-[11px] text-zinc-400">
-                            <span class="text-amber-400 font-bold block mb-0.5">⚠️ 피해야 할 음식 (초가공식품 금지)</span>
-                            <p>• 과도한 설탕, 탄산음료, 과자, 패스트푸드, 튀김류, 과도한 음주</p>
+                        <!-- 4대 다량 영양소 배정 비율 정보 -->
+                        <div class="grid grid-cols-2 gap-2 bg-zinc-950 p-2.5 rounded-lg border border-zinc-800">
+                            <div>
+                                <span class="text-zinc-400 font-bold text-[11px]">① 칼로리 흑자</span>
+                                <p class="text-[11px] text-zinc-300">유지칼로리 +200~400kcal<br>(천천히 늘려 체지방 제어)</p>
+                            </div>
+                            <div>
+                                <span class="text-zinc-400 font-bold text-[11px]">② 단백질 공급량</span>
+                                <p class="text-[11px] text-zinc-300">체중당 1.6~2.2g / kg<br>(예: 70kg ➔ 112~154g)</p>
+                            </div>
+                            <div class="mt-1">
+                                <span class="text-zinc-400 font-bold text-[11px]">③ 탄수화물 (핵심)</span>
+                                <p class="text-[11px] text-zinc-300">현미, 오트밀, 감자, 고구마, 과일, 쌀 (운동 에너지원)</p>
+                            </div>
+                            <div class="mt-1">
+                                <span class="text-zinc-400 font-bold text-[11px]">④ 건강한 지방</span>
+                                <p class="text-[11px] text-zinc-300">총 칼로리의 약 20~30%<br>(견과류, 올리브유, 아보카도)</p>
+                            </div>
+                        </div>
+
+                        <!-- 엑셀 가로 세로 식재료 백과사전 표 구현 -->
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-zinc-200 text-[11px]">🥦 벌크업 추천 클린 식품군 분류</h4>
+                            <div class="bg-zinc-950 p-2 rounded-lg border border-zinc-800 text-[10px] text-zinc-400 space-y-1">
+                                <p>• <strong>단백질:</strong> 닭가슴살, 소고기, 돼지 안심, 연어, 참치, 달걀, 두부, 그릭요거트, 우유, 웨이 프로틴</p>
+                                <p>• <strong>탄수화물:</strong> 현미, 백미, 오트밀, 감자, 고구마, 통밀빵, 바나나</p>
+                                <p>• <strong>지방:</strong> 아몬드, 호두, 캐슈넛, 아보카도, 올리브오일, 땅콩버터</p>
+                                <p>• <strong>채소/과일:</strong> 브로콜리, 시금치, 양배추, 파프리카, 아스파라거스, 바나나, 블루베리, 딸기, 사과, 오렌지</p>
+                            </div>
+                        </div>
+
+                        <!-- 하루 예시 3000Kcal 식단 표 이식 -->
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-zinc-200 text-[11px]">⏳ 하루 추천 식단 예시 (약 3,000 kcal)</h4>
+                            <div class="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-[11px] text-zinc-300 space-y-1">
+                                <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>🌅 아침</span> <span class="text-zinc-400">오트밀 + 달걀 + 바나나 + 그릭요거트</span></p>
+                                <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>🌾 오전 간식</span> <span class="text-zinc-400">견과류 + 우유</span></p>
+                                <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>☀️ 점심</span> <span class="text-zinc-400">현미밥 + 닭가슴살 + 브로콜리</span></p>
+                                <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>🏃 운동 전</span> <span class="text-zinc-400">고구마 + 닭가슴살</span></p>
+                                <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>⚡ 운동 직후</span> <span class="text-zinc-400">웨이 프로틴 + 바나나</span></p>
+                                <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>🌌 저녁</span> <span class="text-zinc-400">연어 + 현미밥 + 샐러드</span></p>
+                                <p class="flex justify-between"><span>🛌 취침 전</span> <span class="text-zinc-400">카제인 또는 그릭요거트</span></p>
+                            </div>
+                        </div>
+
+                        <!-- 벌크업 성공 원칙 리스트 구조화 -->
+                        <div class="bg-zinc-850 p-2.5 rounded-lg border border-zinc-800 text-[10px] text-zinc-400 space-y-1 shadow-inner">
+                            <span class="text-brand-teal font-bold block text-[11px] mb-0.5">🎯 벌크업 성공을 위한 핵심 원칙</span>
+                            <p>1. 단백질은 하루에 여러 번 나누어 공급하여 합성률을 계속 띄워 줍니다.</p>
+                            <p>2. 탄수화물은 특히 운동 전후에 집중적으로 밀어 넣어 운동 수행과 복구를 적극 지원합니다.</p>
+                            <p>3. 근력 운동 시 중량이나 횟수를 점진적으로 올리는 <strong>'점진적 과부하'</strong>를 철저히 적용합니다.</p>
+                            <p>4. 신체 회복을 위해 하루 7~9시간의 양질의 수면과 충분한 수분 공급을 사수해 주세요.</p>
+                        </div>
+
+                        <div class="bg-rose-950/20 p-2.5 rounded-lg border border-rose-900/30 text-[11px] text-rose-400">
+                            ❌ <strong>벌크업 시 기피 음식:</strong> 과도한 설탕, 탄산음료, 과자, 패스트푸드, 튀김류, 과도한 음주, 초가공식품
                         </div>
                     </div>`;
             }
             
-            // 보충제 서브탭 최초 및 가변 트리거 갱신
             renderProteinTabContent();
         }
     </script>
