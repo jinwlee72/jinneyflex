@@ -47,6 +47,7 @@
 
         <main class="flex-grow p-4 space-y-6 overflow-y-auto">
 
+            <!-- 👤 1. 프로필 패널 -->
             <section id="pane-profile" class="fade-in space-y-5">
                 <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-5 shadow-sm">
                     <div class="flex items-center gap-2 mb-4 border-b border-zinc-800 pb-3">
@@ -83,6 +84,7 @@
                 </div>
             </section>
 
+            <!-- 🎬 2. 운동영상 패널 -->
             <section id="pane-library" class="fade-in space-y-4 hidden">
                 <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-4 shadow-sm sticky top-16 z-30">
                     <div class="grid grid-cols-2 gap-2 text-sm">
@@ -102,11 +104,12 @@
                 </div>
                 <div id="library-card-grid" class="space-y-4"></div>
                 <div class="flex flex-col items-center gap-3 bg-zinc-850 border border-zinc-800 px-4 py-3 rounded-2xl">
-                    <span id="library-page-info" class="text-xs text-zinc-400 font-medium">총 0개의 영상</span>
+                    <span id="library-page-info" class="text-xs text-zinc-400 font-medium">선택 대기 중</span>
                     <div id="library-pagination-buttons" class="flex flex-wrap justify-center gap-1.5"></div>
                 </div>
             </section>
 
+            <!-- 💊 3. 보충제 패널 -->
             <section id="pane-protein" class="fade-in space-y-4 hidden">
                 <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-4 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-zinc-800 pb-2.5">
@@ -122,6 +125,7 @@
                 </div>
             </section>
 
+            <!-- 🍱 4. 식단 패널 -->
             <section id="pane-diet" class="fade-in space-y-4 hidden">
                 <div class="bg-zinc-850 border border-zinc-800 rounded-2xl p-4 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-zinc-800 pb-2.5">
@@ -138,6 +142,7 @@
 
         </main>
 
+        <!-- 📱 하단 네비게이션 바 -->
         <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-zinc-900 border-t border-zinc-800 flex justify-around py-2.5 z-40">
             <button id="tab-profile" onclick="switchTab('profile')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-brand-teal"><span>👤</span><span>프로필</span></button>
             <button id="tab-library" onclick="switchTab('library')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-zinc-500"><span>🎬</span><span>운동영상</span></button>
@@ -145,6 +150,7 @@
             <button id="tab-diet" onclick="switchTab('diet')" class="flex flex-col items-center gap-1 text-[10px] font-bold text-zinc-500"><span>🍱</span><span>식단</span></button>
         </nav>
 
+        <!-- 📺 인앱 유튜브 쇼츠 팝업 플레이어 -->
         <div id="video-modal" class="hidden fixed inset-0 z-50 bg-zinc-950/95 backdrop-blur-sm flex items-center justify-center p-4 fade-in">
             <div class="bg-zinc-900 border border-zinc-800 w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl">
                 <div class="p-3.5 border-b border-zinc-800 flex justify-between items-center bg-zinc-950">
@@ -193,31 +199,36 @@
         ];
 
         function saveState() {
-            sessionStorage.setItem('j_gender_session', state.gender || '');
-            sessionStorage.setItem('j_place_session', state.place || '');
-            localStorage.setItem('j_diet_v8', state.dietTarget);
+            sessionStorage.setItem('j_gender_v19', state.gender || '');
+            sessionStorage.setItem('j_place_v19', state.place || '');
+            localStorage.setItem('j_diet_v19', state.dietTarget);
         }
 
+        // 💡 [버그 교정 검증] 세션 삭제 로직 제거 및 안전한 캐싱 구조화 완료
         function loadState() {
-            state.gender = sessionStorage.getItem('j_gender_session') || '';
-            state.place = sessionStorage.getItem('j_place_session') || '';
-            if (localStorage.getItem('j_diet_v8')) state.dietTarget = localStorage.getItem('j_diet_v8');
+            state.gender = sessionStorage.getItem('j_gender_v19') || '';
+            state.place = sessionStorage.getItem('j_place_v19') || '';
+            if (localStorage.getItem('j_diet_v19')) state.dietTarget = localStorage.getItem('j_diet_v19');
         }
 
-        async function initApp() {
+        // 💡 [비동기 차단 원천 해제] 네트워크가 늦어져도 화면 클릭은 즉시 활성화되도록 구조화
+        function initApp() {
             loadState();
-            if (SHEET_API_URL && SHEET_API_URL.trim() !== '') {
-                try {
-                    const res = await fetch(SHEET_API_URL);
-                    const jsonData = await res.json();
-                    
-                    if (Array.isArray(jsonData)) {
-                        state.exercises = jsonData;
-                    }
-                } catch(e) { console.error("Apps Script 보안 데이터 허브 연동 실패", e); }
-            }
             refreshProfileButtons();
             render();
+
+            // 백그라운드에서 구글 서버 데이터를 무비동기 차단 형태로 안전하게 인출
+            if (SHEET_API_URL && SHEET_API_URL.trim() !== '') {
+                fetch(SHEET_API_URL)
+                    .then(res => res.json())
+                    .then(jsonData => {
+                        if (Array.isArray(jsonData)) {
+                            state.exercises = jsonData;
+                            render(); // 데이터 들어오면 그 구역만 싹 리렌더링
+                        }
+                    })
+                    .catch(e => console.error("Apps Script 서버 연동 지연", e));
+            }
         }
 
         window.onload = initApp;
@@ -241,11 +252,6 @@
                 const pane = document.getElementById('pane-' + t);
                 if (pane) pane.classList.toggle('hidden', t !== tabId);
             });
-            if(tabId === 'library') {
-                state.libPage = 1; state.libFilter.area = ''; state.libFilter.search = '';
-                if(document.getElementById('filter-area')) document.getElementById('filter-area').value = '';
-                if(document.getElementById('filter-search')) document.getElementById('filter-search').value = '';
-            }
             render();
         }
 
@@ -313,10 +319,6 @@
         
         function setProteinSubTab(subTabId) {
             state.proteinSubTab = subTabId;
-            ['sub', 'mix', 'time'].forEach(t => {
-                const btn = document.getElementById('btn-pro-' + t);
-                if(btn) btn.className = `py-2 rounded-lg ${t === subTabId ? 'bg-brand-teal text-white' : 'bg-zinc-800 text-zinc-400'}`;
-            });
             renderProteinTabContent();
         }
 
@@ -324,6 +326,11 @@
             const container = document.getElementById('protein-content-area');
             if(!container) return;
             container.innerHTML = "";
+
+            ['sub', 'mix', 'time'].forEach(t => {
+                const btn = document.getElementById('btn-pro-' + t);
+                if(btn) btn.className = `py-2 rounded-lg ${t === state.proteinSubTab ? 'bg-brand-teal text-white' : 'bg-zinc-800 text-zinc-400'}`;
+            });
 
             if (state.proteinSubTab === 'sub') {
                 rawSupplements.forEach(sup => {
@@ -376,4 +383,176 @@
         }
 
         function render() {
-            const grid = document.getElementById('library-card-grid
+            const grid = document.getElementById('library-card-grid'); 
+            const pageContainer = document.getElementById('library-pagination-buttons');
+            if(!grid || !pageContainer) return;
+            
+            if (!state.libFilter.area && !state.libFilter.search) {
+                grid.innerHTML = `
+                    <div class="text-center py-16 px-4 text-sm text-zinc-500 border border-zinc-800 border-dashed rounded-2xl bg-zinc-850/30 leading-relaxed">
+                        <span class="text-3xl block mb-2">🔍</span>상단의 [운동부위]를 선택하거나<br>[검색창]에 키워드를 입력해 주세요.
+                    </div>`;
+                document.getElementById('library-page-info').innerText = `선택 대기 중`;
+                pageContainer.innerHTML = "";
+                state.currentVideoList = [];
+            } else {
+                let libFiltered = state.exercises.filter(ex => {
+                    const userPlace = (state.place || "").trim();
+                    const userGender = (state.gender || "").trim();
+                    
+                    const exPlace = (ex.place || "").trim();
+                    const exGender = (ex.gender || "").trim();
+
+                    if (userPlace && exPlace && !exPlace.includes(userPlace) && exPlace !== "전체" && exPlace !== "공통") {
+                        return false;
+                    }
+                    if (userGender && exGender && exGender !== '공통' && exGender !== '전체' && exGender !== userGender) {
+                        return false;
+                    }
+                    if (state.libFilter.area && ex.area !== state.libFilter.area) return false;
+                    if (state.libFilter.search) {
+                        const targetTitle = ex.ytTitle.toLowerCase();
+                        if (!targetTitle.includes(state.libFilter.search)) return false;
+                    }
+                    return true;
+                });
+                
+                libFiltered.reverse();
+                state.currentVideoList = libFiltered;
+
+                const totalItems = libFiltered.length;
+                const totalPages = Math.ceil(totalItems / state.libPageSize) || 1;
+                if (state.libPage > totalPages) state.libPage = totalPages;
+
+                const start = (state.libPage - 1) * state.libPageSize;
+                const paged = libFiltered.slice(start, start + state.libPageSize);
+                document.getElementById('library-page-info').innerText = totalItems > 0 ? `전체 ${totalItems}개 중 ${start + 1} - ${start + paged.length} 표시` : "검색 결과 없음";
+
+                pageContainer.innerHTML = "";
+                for (let p = 1; p <= totalPages; p++) {
+                    const isCur = (p === state.libPage);
+                    pageContainer.innerHTML += `<button onclick="libraryChangePage(${p})" class="w-8 h-8 rounded-lg border text-xs font-bold transition-colors ${isCur ? 'bg-brand-teal text-white border-teal-500' : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'}">${p}</button>`;
+                }
+
+                grid.innerHTML = "";
+                if (paged.length === 0) {
+                    grid.innerHTML = `<div class="text-center py-12 px-4 text-sm text-zinc-500 border border-zinc-800 border-dashed rounded-2xl bg-zinc-850/50">검색 조건에 일치하는 영상이 없습니다.</div>`;
+                } else {
+                    paged.forEach(ex => {
+                        let videoId = "";
+                        if (ex.ytUrl.includes("shorts/")) videoId = ex.ytUrl.split("shorts/")[1].split("?")[0];
+                        else if (ex.ytUrl.includes("v=")) videoId = ex.ytUrl.split("v=")[1].split("&")[0];
+                        else if (ex.ytUrl.includes("youtu.be/")) videoId = ex.ytUrl.split("youtu.be/")[1].split("?")[0];
+                        const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=150';
+
+                        grid.innerHTML += `
+                            <div class="bg-zinc-850 border border-zinc-800/60 rounded-xl overflow-hidden p-2 flex gap-3 items-center shadow-sm hover:border-brand-teal transition-all cursor-pointer" onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')">
+                                <div class="relative w-32 aspect-[16/9] bg-zinc-950 rounded-lg overflow-hidden shrink-0 shadow-inner group">
+                                    <img src="${thumbUrl}" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition-opacity">
+                                    <div class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                                        <div class="bg-black/60 rounded-full p-1.5 text-brand-teal">
+                                            <svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-grow min-w-0 space-y-1.5">
+                                    <div class="flex gap-1 flex-wrap">
+                                        <span class="bg-zinc-900 text-brand-teal text-[9px] font-bold px-1.5 py-0.5 rounded border border-zinc-800">${ex.area}</span>
+                                        <span class="bg-zinc-900 text-zinc-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-zinc-800">${ex.equipment}</span>
+                                    </div>
+                                    <h3 class="font-bold text-xs sm:text-sm text-white tracking-tight leading-snug line-clamp-2">
+                                        ${ex.ytTitle}
+                                    </h3>
+                                </div>
+                            </div>`;
+                    });
+                }
+            }
+
+            ['diet', 'bulk'].forEach(d => {
+                const btn = document.getElementById('diet-target-' + d);
+                if (btn) btn.className = `py-2.5 rounded-lg font-bold text-xs transition-colors ${state.dietTarget === d ? 'bg-brand-teal text-white border-teal-500' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`;
+            });
+
+            const dietMenu = document.getElementById('diet-menu-container');
+            if (dietMenu) {
+                if (state.dietTarget === 'diet') {
+                    dietMenu.innerHTML = `
+                        <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 space-y-4 text-xs leading-relaxed">
+                            <div class="border-b border-zinc-800 pb-2.5">
+                                <span class="text-[10px] font-bold text-brand-teal bg-zinc-800 px-2 py-0.5 rounded mb-1 inline-block">수면 4시간 전 금식 정석</span>
+                                <p class="text-[11px] text-zinc-400">지방 합성 효소 분비를 차단하기 위해 <strong>저녁 식사는 늦어도 밤 7시 30분(취침 전 최소 4시간 여유)까지</strong> 완결하는 식단 구조입니다.</p>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="border-l-2 border-brand-teal pl-2">
+                                    <p class="text-zinc-200 font-bold">1. 아침 식사 (Breakfast)</p>
+                                    <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>목표:</strong> 밤새 소모된 에너지 보충, 단백질 공급, 오전 집중력 향상</p>
+                                    <p class="text-[11px] text-zinc-300">• <strong>예시 식단:</strong> 오트밀 100g, 달걀 3개, 그릭요거트, 바나나 1개, 아몬드 한 줌, 베리류, 통밀빵, 우유, 닭가슴살</p>
+                                </div>
+                                <div class="border-l-2 border-brand-teal pl-2">
+                                    <p class="text-zinc-200 font-bold">2. 점심 식사 (Lunch)</p>
+                                    <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>목표:</strong> 오후 운동을 위한 에너지 확보, 근육 회복 준비</p>
+                                    <p class="text-[11px] text-zinc-300">• <strong>예시 식단:</strong> 현미밥 250g, 닭가슴살 200g, 브로콜리, 올리브오일 1스푼</p>
+                                </div>
+                                <div class="border-l-2 border-brand-teal pl-2">
+                                    <p class="text-zinc-200 font-bold">3. 운동 전 식사 (Pre-Workout)</p>
+                                    <p class="text-[11px] text-zinc-400 mt-0.5">• <strong>추천 음식:</strong> 바나나, 고구마, 오트밀, 현미밥, 닭가슴살, 그릭요거트</p>
+                                </div>
+                                <div class="border-l-2 border-brand-teal pl-2">
+                                    <p class="text-zinc-200 font-bold">4. 운동 직후 식사 (Post-Workout)</p>
+                                    <p class="text-[11px] text-zinc-300">• <strong>예시 식단:</strong> 웨이 프로틴 1스쿱, 바나나, 흰쌀밥, 닭가슴살 또는 초코우유</p>
+                                </div>
+                                <div class="border-l-2 border-brand-teal pl-2">
+                                    <p class="text-zinc-200 font-bold">5. 저녁 식사 (Dinner)</p>
+                                    <p class="text-[11px] text-zinc-300">• <strong>예시 식단:</strong> 연어 200g, 고구마, 샐러드, 아보카도 주축 구성</p>
+                                </div>
+                                <div class="border-l-2 border-brand-teal pl-2">
+                                    <p class="text-zinc-200 font-bold">6. 취침 전 식사 (Before Bed)</p>
+                                    <p class="text-[11px] text-zinc-300">• <strong>추천 음식:</strong> 카제인 단백질, 그릭요거트, 코티지 치즈, 우유</p>
+                                </div>
+                            </div>
+                        </div>`;
+                } else {
+                    dietMenu.innerHTML = `
+                        <div class="bg-zinc-900 p-4 rounded-xl border border-zinc-800 space-y-4 text-xs leading-relaxed">
+                            <div class="border-b border-zinc-800 pb-2.5">
+                                <span class="text-[10px] font-bold text-brand-teal bg-zinc-800 px-2 py-0.5 rounded mb-1 inline-block">벌크업(Bulking) 대원칙</span>
+                                <p class="text-[11px] text-zinc-400">적절한 칼로리 흑자(<strong>유지 칼로리보다 약 200~400kcal 추가</strong>), 린벌크 구조입니다.</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 bg-zinc-950 p-2.5 rounded-lg border border-zinc-800">
+                                <div><span class="text-zinc-400 font-bold text-[11px]">① 칼로리 흑자</span><p class="text-[11px] text-zinc-300">유지칼로리 +200~400kcal</p></div>
+                                <div><span class="text-zinc-400 font-bold text-[11px]">② 단백질 공급량</span><p class="text-[11px] text-zinc-300">1.6~2.2g / kg 체중</p></div>
+                                <div class="mt-1"><span class="text-zinc-400 font-bold text-[11px]">③ 탄수화물 (핵심)</span><p class="text-[11px] text-zinc-300">현미, 오트밀, 고구마, 쌀</p></div>
+                                <div class="mt-1"><span class="text-zinc-400 font-bold text-[11px]">④ 건강한 지방</span><p class="text-[11px] text-zinc-300">총 칼로리의 약 20~30%</p></div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-zinc-200 text-[11px]">🥦 벌크업 추천 식품군 분류</h4>
+                                <div class="bg-zinc-950 p-2 rounded-lg border border-zinc-800 text-[10px] text-zinc-400 space-y-1">
+                                    <p>• 닭가슴살, 소고기, 돼지 안심, 연어, 참치, 달걀, 두부, 그릭요거트, 우유, 웨이 프로틴, 현미, 오트밀, 고구마, 아몬드, 아보카도</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <h4 class="font-bold text-zinc-200 text-[11px]">⏳ 하루 추천 식단 예시 (약 3,000 kcal)</h4>
+                                <div class="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-[11px] text-zinc-300 space-y-1">
+                                    <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>🌅 아침</span> <span class="text-zinc-400">오트밀 + 달걀 + 바나나 + 그릭요거트</span></p>
+                                    <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>🌾 간식</span> <span class="text-zinc-400">견과류 + 우유</span></p>
+                                    <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>☀️ 점심</span> <span class="text-zinc-400">현미밥 + 닭가슴살 + 브로콜리</span></p>
+                                    <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>🏃 운동 전</span> <span class="text-zinc-400">고구마 + 닭가슴살</span></p>
+                                    <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>⚡ 운동 직후</span> <span class="text-zinc-400">웨이 프로틴 + 바나나</span></p>
+                                    <p class="flex justify-between border-b border-zinc-800/60 pb-1"><span>🌌 저녁</span> <span class="text-zinc-400">연어 + 현미밥 + 샐러드</span></p>
+                                    <p class="flex justify-between"><span>🛌 취침 전</span> <span class="text-zinc-400">카제인 또는 그릭요거트</span></p>
+                                </div>
+                            </div>
+                        </div>`;
+                }
+            }
+            
+            renderProteinTabContent();
+        }
+    </script>
+</body>
+</html>
