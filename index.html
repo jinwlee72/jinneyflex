@@ -90,9 +90,16 @@
                     <div class="grid grid-cols-2 gap-2 text-sm">
                         <select id="filter-area" onchange="applyLibraryFilters()" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-zinc-200 font-medium outline-none focus:border-brand-teal">
                             <option value="">운동부위 선택</option>
-                            <option value="가슴">가슴</option><option value="등">등</option><option value="하체">하체</option><option value="어깨">어깨</option><option value="팔">팔</option><option value="힙/엉덩이">힙/엉덩이</option><option value="복근">복근</option><option value="전신">전신</option>
+                            <option value="가슴">가슴</option>
+                            <option value="등">등</option>
+                            <option value="어깨">어깨</option>
+                            <option value="팔">팔</option>
+                            <option value="복근">복근</option>
+                            <option value="하체">하체</option>
+                            <option value="힙/엉덩이">힙/엉덩이</option>
+                            <option value="전신">전신</option>
                         </select>
-                        <input id="filter-search" type="text" oninput="applyLibraryFilters()" placeholder="🔍 운동명/기구 검색" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-zinc-200 font-medium outline-none focus:border-brand-teal text-xs">
+                        <input id="filter-search" type="text" oninput="applyLibraryFilters()" placeholder="🔍 운동명/키워드 검색" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-zinc-200 font-medium outline-none focus:border-brand-teal text-xs">
                     </div>
                 </div>
                 <div id="library-card-grid" class="space-y-4"></div>
@@ -163,6 +170,7 @@
     </div>
 
     <script>
+        // 💡 지정해 주신 정석 TSV 데이터 액세스 주소를 반영 완료했습니다.
         const SHEET_TSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSyqHn_8Kn5B5_ntI9bmDxlWvJVGnv0GWWUu3d3UnPjRQObLnGI_aIb8vGVRJdRaE8hWuiPBrmErvXs/pub?output=tsv'; 
 
         let state = {
@@ -198,8 +206,10 @@
         }
 
         function loadState() {
-            state.gender = sessionStorage.getItem('j_gender_session') || ''; 
-            state.place = sessionStorage.getItem('j_place_session') || '';
+            state.gender = ''; 
+            state.place = '';
+            sessionStorage.removeItem('j_gender_session');
+            sessionStorage.removeItem('j_place_session');
             if (localStorage.getItem('j_diet_v8')) state.dietTarget = localStorage.getItem('j_diet_v8');
         }
 
@@ -412,10 +422,11 @@
                     if (state.place && ex.place !== state.place) return false;
                     if (state.gender && ex.gender !== '공통' && ex.gender !== state.gender) return false;
                     if (state.libFilter.area && ex.area !== state.libFilter.area) return false;
+                    
+                    // 💡 [유튜브 제목 전용 실시간 매칭 검색 적용]
                     if (state.libFilter.search) {
                         const targetTitle = ex.ytTitle.toLowerCase();
-                        const targetEquip = ex.equipment.toLowerCase();
-                        if (!targetTitle.includes(state.libFilter.search) && !targetEquip.includes(state.libFilter.search)) return false;
+                        if (!targetTitle.includes(state.libFilter.search)) return false;
                     }
                     return true;
                 });
@@ -445,8 +456,9 @@
                         if (ex.ytUrl.includes("shorts/")) videoId = ex.ytUrl.split("shorts/")[1].split("?")[0];
                         else if (ex.ytUrl.includes("v=")) videoId = ex.ytUrl.split("v=")[1].split("&")[0];
                         else if (ex.ytUrl.includes("youtu.be/")) videoId = ex.ytUrl.split("youtu.be/")[1].split("?")[0];
-                        const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500';
+                        const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=150';
 
+                        // 💡 image_5305ef.jpg 스타일 가로형 최적화 레이아웃 컴포넌트
                         grid.innerHTML += `
                             <div class="bg-zinc-850 border border-zinc-800/60 rounded-xl overflow-hidden p-2 flex gap-3 items-center shadow-sm hover:border-brand-teal transition-all cursor-pointer" onclick="playYoutube('${ex.ytUrl}', '${ex.ytTitle}')">
                                 <div class="relative w-32 aspect-[16/9] bg-zinc-950 rounded-lg overflow-hidden shrink-0 shadow-inner group">
@@ -476,7 +488,7 @@
                 if (btn) btn.className = `py-2.5 rounded-lg font-bold text-xs transition-colors ${state.dietTarget === d ? 'bg-brand-teal text-white border-teal-500' : 'bg-zinc-800 text-zinc-400 border-zinc-700'}`;
             });
 
-            // 🍱 엑셀 시트 100% 매핑 동적 식단 구조화 영역
+            // 🍱 엑셀 시트 데이터 100% 반영 완료 식단 렌더러 영역
             const dietMenu = document.getElementById('diet-menu-container');
             if (state.dietTarget === 'diet') {
                 dietMenu.innerHTML = `
@@ -486,7 +498,6 @@
                             <p class="text-[11px] text-zinc-400">지방 합성 효소 분비를 차단하기 위해 <strong>저녁 식사는 늦어도 밤 7시 30분(취침 전 최소 4시간 여유)까지</strong> 완결하는 식단 구조입니다.</p>
                         </div>
                         
-                        <!-- 6단계 상세 가이드 라인 표 기전 연동 -->
                         <div class="space-y-3">
                             <div class="border-l-2 border-brand-teal pl-2">
                                 <p class="text-zinc-200 font-bold">1. 아침 식사 (Breakfast)</p>
@@ -534,7 +545,6 @@
                             <p class="text-[11px] text-zinc-400">적절한 칼로리 흑자(<strong>유지 칼로리보다 약 200~400kcal 추가</strong>), 충분한 단백질, 적절한 탄수화물, 건강한 지방을 꾸준히 공급하여 체지방 증가를 최소화하는 린벌크 구조입니다.</p>
                         </div>
 
-                        <!-- 4대 다량 영양소 배정 비율 정보 -->
                         <div class="grid grid-cols-2 gap-2 bg-zinc-950 p-2.5 rounded-lg border border-zinc-800">
                             <div>
                                 <span class="text-zinc-400 font-bold text-[11px]">① 칼로리 흑자</span>
@@ -542,7 +552,7 @@
                             </div>
                             <div>
                                 <span class="text-zinc-400 font-bold text-[11px]">② 단백질 공급량</span>
-                                <p class="text-[11px] text-zinc-300">체중당 1.6~2.2g / kg<br>(예: 70kg ➔ 112~154g)</p>
+                                <p class="text-[11px] text-zinc-300">1.6~2.2g / kg 체중<br>(예: 70kg ➔ 112~154g)</p>
                             </div>
                             <div class="mt-1">
                                 <span class="text-zinc-400 font-bold text-[11px]">③ 탄수화물 (핵심)</span>
@@ -554,7 +564,6 @@
                             </div>
                         </div>
 
-                        <!-- 엑셀 가로 세로 식재료 백과사전 표 구현 -->
                         <div class="space-y-1">
                             <h4 class="font-bold text-zinc-200 text-[11px]">🥦 벌크업 추천 클린 식품군 분류</h4>
                             <div class="bg-zinc-950 p-2 rounded-lg border border-zinc-800 text-[10px] text-zinc-400 space-y-1">
@@ -565,7 +574,6 @@
                             </div>
                         </div>
 
-                        <!-- 하루 예시 3000Kcal 식단 표 이식 -->
                         <div class="space-y-1">
                             <h4 class="font-bold text-zinc-200 text-[11px]">⏳ 하루 추천 식단 예시 (약 3,000 kcal)</h4>
                             <div class="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-[11px] text-zinc-300 space-y-1">
@@ -579,17 +587,18 @@
                             </div>
                         </div>
 
-                        <!-- 벌크업 성공 원칙 리스트 구조화 -->
                         <div class="bg-zinc-850 p-2.5 rounded-lg border border-zinc-800 text-[10px] text-zinc-400 space-y-1 shadow-inner">
                             <span class="text-brand-teal font-bold block text-[11px] mb-0.5">🎯 벌크업 성공을 위한 핵심 원칙</span>
-                            <p>1. 단백질은 하루에 여러 번 나누어 공급하여 합성률을 계속 띄워 줍니다.</p>
-                            <p>2. 탄수화물은 특히 운동 전후에 집중적으로 밀어 넣어 운동 수행과 복구를 적극 지원합니다.</p>
-                            <p>3. 근력 운동 시 중량이나 횟수를 점진적으로 올리는 <strong>'점진적 과부하'</strong>를 철저히 적용합니다.</p>
-                            <p>4. 신체 회복을 위해 하루 7~9시간의 양질의 수면과 충분한 수분 공급을 사수해 주세요.</p>
+                            <p>1. 유지칼로리보다 200~400kcal 정도만 더 섭취해 체지방 증가를 최소화합니다.</p>
+                            <p>2. 단백질은 체중 1kg당 1.6~2.2g을 목표로 하고 하루에 여러 번 나누어 섭취합니다.</p>
+                            <p>3. 탄수화물은 운동 전후에 충분히 섭취해 운동 수행과 회복을 지원합니다.</p>
+                            <p>4. 근력 운동은 점진적으로 중량이나 반복 횟수를 늘리는 점진적 과부하를 적용합니다.</p>
+                            <p>5. 하루 7~9시간 수면과 충분한 수분 섭취를 유지합니다.</p>
+                            <p>6. 체중은 주당 약 0.25~0.5% 증가를 목표로 하여 근육 위주의 '린 벌크(Lean Bulk)'를 진행하는 것이 일반적으로 권장됩니다.</p>
                         </div>
 
                         <div class="bg-rose-950/20 p-2.5 rounded-lg border border-rose-900/30 text-[11px] text-rose-400">
-                            ❌ <strong>벌크업 시 기피 음식:</strong> 과도한 설탕, 탄산음료, 과자, 패스트푸드, 튀김류, 과도한 음주, 초가공식품
+                            ❌ <strong>벌크업 시 피해야 할 음식:</strong> 과도한 설탕, 탄산음료, 과자, 패스트푸드, 튀김류, 과도한 음주, 초가공식품
                         </div>
                     </div>`;
             }
